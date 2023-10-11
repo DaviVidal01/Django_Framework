@@ -59,10 +59,10 @@ ou
 
 #### **1.5.** *Inicialização de um novo app Django.*
 
-- 🔔 Para criar um novo aplicativo dentro do projeto, execute o seguinte comando no terminal ou prompt de comando (substitua **nome-do-app** pelo nome do aplicativo):
+- 🔔 Para criar um novo aplicativo dentro do projeto, execute o seguinte comando no terminal ou prompt de comando dentro do diretório (**nome-do-projeto**) onde é o seu projeto (substitua **nome-do-app** pelo nome do aplicativo):
 
-`cd <nome-do-projeto>
-python manage.py startapp <nome-do-app>`
+`cd nome-do-projeto
+python manage.py startapp nome-do-app`
 
 Isso criará a estrutura de diretórios e arquivos para o seu novo aplicativo Django.
 

@@ -27,7 +27,7 @@ pip --version
 
 ##### 2. Navegue até o diretório onde deseja criar seu ambiente virtual.
 
-##### 3. Execute o seguinte comando para criar o ambiente virtual (substitua **nome-do-ambiente** pelo nome que você deseja para o seu ambiente):
+##### 3. Execute o seguinte comando para criar o ambiente virtual (substitua `nome-do-ambiente` pelo nome que você deseja para o seu ambiente):
 
 - 🖥️ No Windows:
 ```bash
@@ -54,7 +54,7 @@ Agora, você está dentro do ambiente virtual e pode instalar as dependências e
 
 <img src="README-assets/ex01.png" alt="Exemplo01" />
 
-- 🔩 Lembrando que quando fechar o seu editor e abrir novamente, terá de ativar a venv (ambiente) novamente seguindo a etapa 1.2.4
+- 🔩 Lembrando que quando fechar o seu editor e abrir novamente, terá de ativar a venv (ambiente virtual) novamente seguindo a etapa 1.2.4
 
 ### **1.3.** *Instalação do Django usando o Pip.*
 
@@ -102,10 +102,11 @@ Isso criará a estrutura de diretórios e arquivos para o seu novo aplicativo Dj
 <img src="README-assets/ex04.png" alt="Exemplo04" />
 
 ### **1.6.** *Executando o servidor com Runserver*
+> 📌 # O servidor de desenvolvimento é uma ferramenta que permite que você teste e visualize seu aplicativo enquanto o desenvolve. Lembre-se de que o servidor de desenvolvimento é destinado apenas para uso durante o desenvolvimento e testes.
 
 ##### 1. Abra um terminal ou prompt de comando.
 
-##### 2. Navegue até a pasta raiz do seu projeto Django, onde está localizado o arquivo `manage.py`. Use o comando `cd` para acessar a pasta (**WebBooks** é o nome da minha pasta Raiz/Pai do projeto). 
+##### 2. Navegue até a pasta raiz do seu projeto Django, onde está localizado o arquivo `manage.py`. Use o comando `cd` para acessar a pasta (`WebBooks` é o nome da minha pasta Raiz/Pai do projeto). 
 <img src="README-assets/ex14.png" alt="Exemplo14">
 
 ##### 3. Agora que você está na pasta do projeto e com o ambiente virtual ativado, você pode iniciar o servidor de desenvolvimento com o seguinte comando:
@@ -173,18 +174,19 @@ python3 manage.py runserver
 - Abra o MySQL Workbench e clica no "+" para criar seu servidor.
 <img src="README-assets/ex06.png" alt="Exemplo06">
 
-- Crie um novo servidor MySQL se ainda não tiver um configurado e coloque apenas o nome da "**Connection Name**" e clica em "**Ok**"
+- Crie um novo servidor MySQL se ainda não tiver um configurado e coloque o nome da "**Connection Name**", se quiser pode colocar uma senha em "**Password**" e clica em "**Ok**"
 <img src="README-assets/ex07.png" alt="Exemplo07">
 
-- Anote o nome do banco de dados, o nome de usuário (USER) e a senha (PASSWORD) que você configurou no MySQL Workbench.
+- Anote o nome do banco de dados, o nome de usuário (USERNAME) e a senha (PASSWORD) que você configurou no MySQL Workbench.
 
 - Crie um novo esquema "**schema**" de banco de dados (database) para o seu projeto Django (por exemplo, **'WebBooksBD'**).
 <img src="README-assets/ex08.png" alt="Exemplo08">
 
 > É importante que o "**Charset/Collation**" sejam **utf8** e **utf8_unicode_ci** como na imagem, e depois dê **Apply**:
-> <img src="README-assets/ex09.png" alt="Exemplo09">
+<img src="README-assets/ex09.png" alt="Exemplo09">
+
 >> Depois de concordar tudo e finalizar as confirmações, seu banco será criado:
->> <img src="README-assets/ex10.png" alt="Exemplo10">
+<img src="README-assets/ex10.png" alt="Exemplo10">
 
 ### **2.4.** *Configuração do Banco de Dados no Django*
 

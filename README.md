@@ -312,11 +312,18 @@ admin.site.register(Livro)
 
 <img src="README-assets/ex21.png" alt="Exemplo21">
 
-> o Password é invisível por questões de segurança, o Email pode ser aleatório ou o seu oficial, as informações colocadas no exemplo são:
+> 🔩 - O Password é invisível por questões de segurança, o Email pode ser aleatório ou o seu oficial, as informações colocadas no exemplo são:
 > - Username: admin
 > - Email: admin@admin.com
 > - Password: 1234
 > - Password (again): 1234
 > - Confirmação se vou usar senha fraca: y
 
+- Agora quando você fazer o comando do **Runserver** que já foi ensinado na etapa **1.6.4**, vá na URL do seu navegador e adiciona `/admin` e faça o login da sua conta que você criou aqui no Django.
+
+<img src="README-assets/ex22.png" alt="Exemplo22">
+
+<img src="README-assets/ex23.png" alt="Exemplo23">
+
+> 🎛️ # Nesse painel você consegue ter acesso para inserir informações, remover, editar e ler dados inseridos no seu banco de dados, esse ambiente não é recomendável que seja acessado por qualquer usuário, até mesmo para funcionários, é um ambiente de trabalho apenas do ADM do Banco de Dados ou usuários com privilégios elevados.
 ---------------------------------------------------------------

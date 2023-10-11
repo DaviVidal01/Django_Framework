@@ -192,6 +192,12 @@ python3 manage.py runserver
 
 - Abra o arquivo de configuração do banco de dados no seu projeto Django, que normalmente está localizado em `setup/settings.py`.
 
+- Na seção **INSTALLED_APPS**, você vai inserir o nome do seu app entre os que já foram inseridos, colocando o **'nome-do-app',** dentro da seção como no exemplo:
+<img src="README-assets/ex18.png" alt="Exemplo18">
+
+> Caso queira confirmar qual é o nome do seu app, é só entrar no seu app e no arquivo `apps.py`, lá você encontrará esse "**name**", é só copiar e colar.
+<img src="README-assets/ex19.png" alt="Exemplo19">
+
 - Na seção **DATABASES**, você pode configurar a conexão com o MySQL Workbench. Substitua as configurações existentes pelas seguintes:
 
 ```bash
@@ -211,9 +217,9 @@ DATABASES = {
 <img src="README-assets/ex11.png" alt="Exemplo11">
 
 ### **2.5.** *Instalação de Pacotes Python para MySQL no Django*
-> 🌎 # Aqui iremos instalar os pacotes necessários para o funcionamento do Banco de Dados com Django, vamos fazer esses comandos de forma globalmente, assim você não precisará usar esses comandos denovo em seu sistema.
+> 🌎 # Aqui iremos instalar os pacotes necessários para o funcionamento do Banco de Dados com Django, vamos instalar os pacotes necessários na Venv
 >
-> 🚀 # A não ser que você deseja baixar todos esses pacotes e recursos em uma Venv, mas vamos seguir o tutorial com a instalação global.
+> 🚀 # A não ser que você deseja baixar todos esses pacotes e recursos de forma global fora da Venv, você pode sair da venv toda vez que for iniciar o Runserver.
 >> **Sair da Venv**: 
 >> - Você pode estar fechando e abrindo o editor de codigo que você estiver utilizando, dessa forma a venv fechará também
 >> - Caso dessa forma não dê certo, podemos utilizar esses comandos no terminal ou prompt de comando antes de fechar e abrir o editor.
@@ -242,6 +248,75 @@ DATABASES = {
 
 <img src="README-assets/ex12.png" alt="Exemplo12">
 
-> 🛡️ - Depois ative novamente a Venv que você desativou usando os comandos que já foram ensinados.
+> 🛡️ - Depois ative novamente a Venv que você desativou usando os comandos que já foram ensinados para dar continuidade as configurações do seu projeto.
+
+---------------------------------------------------------------
+
+## 📗 Fase 3: Models e Banco de Dados
+
+> 🔔 # Nesta fase, você criará modelos para representar dados em seu aplicativo Django e entenderá como o Django ORM (Object-Relational Mapping) funciona para mapear esses modelos para tabelas no banco de dados.
+
+### **3.1.** *Criar Modelos*
+
+- Modelos são classes que definem a estrutura dos dados que você deseja armazenar em seu banco de dados. Vamos criar um modelo simples como exemplo. Suponha que você esteja criando um aplicativo de gerenciamento de livros. Aqui está um exemplo de modelo de livro:
+
+##### 1. Abra o arquivo `models.py` no diretório do seu aplicativo (por exemplo, `Website/models.py`).
+<img src="README-assets/ex16.png" alt="Exemplo16">
+
+##### 2. Crie uma classe para o modelo de livro:
+```bash
+from django.db import models
+
+class Livro(models.Model):
+    titulo = models.CharField(max_length=200)
+    autor = models.CharField(max_length=100)
+    publicação = models.DateField()
+    paginas = models.IntegerField()
+```
+> 🔔 - Neste exemplo, criamos um modelo de livro com campos como título, autor, data de publicação e número de páginas. Você pode personalizar os campos de acordo com suas necessidades.
+
+### **3.2.** *Migrações e Aplicação*
+
+- Agora que você criou o modelo, é hora de criar uma migração para aplicá-lo ao banco de dados.
+
+##### 1. No terminal, dentro do diretório raiz/pai do projeto, execute o seguinte comando para criar uma migração:
+```bash
+python manage.py makemigrations
+```
+##### 2. Em seguida, execute o comando para aplicar a migração:
+```bash
+python manage.py migrate
+```
+<img src="README-assets/ex20.png" alt="Exemplo20">
+
+### **3.3.** *Django Admin*
+
+- O Django oferece um painel de administração prontamente disponível para gerenciar os dados do banco de dados. Vamos habilitá-lo.
+
+##### 1. Abra o arquivo `admin.py` no diretório do seu aplicativo (por exemplo, `Website/admin.py`).
+<img src="README-assets/ex17.png" alt="Exemplo17">
+
+##### 2. Registre o modelo de livro no painel de administração:
+```bash
+from django.contrib import admin
+from .models import Livro
+
+admin.site.register(Livro)
+```
+
+### **3.4.** *Criar Superusuário*
+
+- Para acessar o painel de administração, você precisará criar um superusuário.
+
+- No terminal, dentro do diretório do projeto, execute o seguinte comando e siga as instruções para criar um superusuário, e depois preencha os parâmetros com nome e senha que você não esquecerá, se preferir pode usar como no exemplo:
+
+<img src="README-assets/ex21.png" alt="Exemplo21">
+
+> o Password é invisível por questões de segurança, o Email pode ser aleatório ou o seu oficial, as informações colocadas no exemplo são:
+> - Username: admin
+> - Email: admin@admin.com
+> - Password: 1234
+> - Password (again): 1234
+> - Confirmação se vou usar senha fraca: y
 
 ---------------------------------------------------------------

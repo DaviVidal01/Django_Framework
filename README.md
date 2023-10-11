@@ -207,7 +207,8 @@ DATABASES = {
 }
 ```
 > Certifique-se de substituir 'seu_usuario_mysql' e 'sua_senha_mysql' pelas credenciais reais do MySQL que você configurou no MySQL Workbench como as do meu:
->> <img src="README-assets/ex11.png" alt="Exemplo11">
+
+<img src="README-assets/ex11.png" alt="Exemplo11">
 
 ### **2.5.** *Instalação de Pacotes Python para MySQL no Django*
 > 🌎 # Aqui iremos instalar os pacotes necessários para o funcionamento do Banco de Dados com Django, vamos fazer esses comandos de forma globalmente, assim você não precisará usar esses comandos denovo em seu sistema.
@@ -238,8 +239,9 @@ DATABASES = {
 > ```
 >
 > **Exemplo sem a Venv:**
-> <img src="README-assets/ex12.png" alt="Exemplo12">
->
+
+<img src="README-assets/ex12.png" alt="Exemplo12">
+
 > 🛡️ - Depois ative novamente a Venv que você desativou usando os comandos que já foram ensinados.
 
 ---------------------------------------------------------------

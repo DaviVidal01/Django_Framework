@@ -327,3 +327,36 @@ admin.site.register(Livro)
 
 > 🎛️ # Nesse painel você consegue ter acesso para inserir informações, remover, editar e ler dados inseridos no seu banco de dados, esse ambiente não é recomendável que seja acessado por qualquer usuário, até mesmo para funcionários, é um ambiente de trabalho apenas do ADM do Banco de Dados ou usuários com privilégios elevados.
 ---------------------------------------------------------------
+
+## 📗 Fase 4: Views e URLs
+
+### **4.1.** *Criar Views*
+
+> 📺 # Views são funções ou classes que processam solicitações do navegador e retornam respostas. Vamos criar uma view simples que exibe uma lista de livros.
+
+##### 1. Abra o arquivo `views.py` no diretório do seu aplicativo (por exemplo, `Website/views.py`).
+
+<img src="README-assets/ex24.png" alt="Exemplo24">
+
+##### 2. Crie uma view:
+```bash
+from django.shortcuts import render
+from .models import Livro
+
+def lista_livros(request):
+    livros = Livro.objects.all()
+    return render(request, 'lista_livros.html', {'livros': livros})
+```
+
+> Nesta view, estamos obtendo todos os objetos de livro do banco de dados e passando-os para um template chamado lista_livros.html.
+> - **livros = Livro.objects.all():** Pega todos os `objects` de models chamado `Livro` e passa-os para dentro da variável `livros`
+> - **render(request, 'lista_livros.html'):** Ele renderizará usando o `request`, o template (site) chamado `lista_livros.html` de dentro da pasta `templates` *(OBS: vamos criar a pasta ainda)*
+> - **{'livros' : livros}:** Ele criará um dicionário chamado `livros` e pegará a variável `livros` e receber todas as informações guardadas dentro da variável.
+
+### **4.2.** *Definir URLs*
+
+- As URLs mapeiam solicitações para views. Vamos definir uma URL que chama a view `lista_livros`.
+
+##### 1. Abra o arquivo `urls.py` no diretório do seu aplicativo (por exemplo, `Website/urls.py`).
+
+<img src="README-assets/ex25.png" alt="Exemplo25">

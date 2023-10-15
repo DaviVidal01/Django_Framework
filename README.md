@@ -328,6 +328,8 @@ admin.site.register(Livro)
 
 <img src="README-assets/ex23.png" alt="Exemplo23">
 
+<img src="README-assets/ex24.png" alt="Exemplo24">
+
 > 🎛️ # Nesse painel você consegue ter acesso para inserir informações, remover, editar e ler dados inseridos no seu banco de dados, esse ambiente não é recomendável que seja acessado por qualquer usuário, até mesmo para funcionários, é um ambiente de trabalho apenas do ADM do Banco de Dados ou usuários com privilégios elevados.
 ---------------------------------------------------------------
 
@@ -339,7 +341,7 @@ admin.site.register(Livro)
 
 ##### 1. Abra o arquivo `views.py` no diretório do seu aplicativo (por exemplo, `Website/views.py`).
 
-<img src="README-assets/ex24.png" alt="Exemplo24">
+<img src="README-assets/ex25.png" alt="Exemplo25">
 
 ##### 2. Crie uma view:
 ```bash
@@ -362,7 +364,7 @@ def lista_livros(request):
 
 ##### 1. Crie um arquivo chamado `urls.py` no diretório do seu aplicativo (por exemplo, `Website/urls.py`).
 
-<img src="README-assets/ex25.png" alt="Exemplo25">
+<img src="README-assets/ex36.png" alt="Exemplo36">
 
 ##### 2. Defina a URL dentro do arquivo `urls.py` no diretório do seu aplicativo:
 
@@ -378,7 +380,7 @@ urlpatterns = [
 > Agora, quando os usuários acessarem `/livros/` em seu site, a view *lista_livros* será chamada.
 > - **from . import views:** Importa da pasta atual (Website) tudo do arquivo views.py (Class, Funções, Métodos, etc.)
 > - **path('livros/', views.lista_livros, name='lista_livros'):** Para acessar a `views.lista_livros` é necessário que o usuário esteja na página da URL `livros/`, o nome dessa path é nomeada de `lista_livros`
-> 📌 *OBS:* A colocação de "," dentro do `urlpatterns` permite que possa ser criada várias `path` de uma vez, então é possível a criação de várias views e URLs para essas views em seu aplicativo.
+>📌 *OBS:* A colocação de "," dentro do `urlpatterns` permite que possa ser criada várias `path` de uma vez, então é possível a criação de várias views e URLs para essas views em seu aplicativo.
 
 ### **4.3.** *Configurando URLs de Setup*
 
@@ -440,17 +442,20 @@ urlpatterns = [
 - Lembre-se de ativar a sua Venv que foi ensinado no **1.4.2**
 
 🚫 ***ERROR - Caso você não ative:***
+
 <img src="README-assets/ex29.png" alt="Exemplo29">
 
 - Lembre-se de deixar o seu Banco de Dados MySQL ligado (XAMPP) como foi ensinado no **2.2.2**
 
 🚫 ***ERROR - Caso você não ligue:***
+
 <img src="README-assets/ex28.png" alt="Exemplo28">
 
 - Lembre-se de digitar a URL corretamente como ensinado no **3.4**
 
 🚫 ***ERROR - Caso você não digite:***
-<img src="README-assets/ex32.png" alt="Exemplo28">
+
+<img src="README-assets/ex32.png" alt="Exemplo32">
 
 > 🗂️ - *OBS:* A página descreve quais URLs estão disponíveis
 
@@ -458,7 +463,7 @@ urlpatterns = [
 
 <img src="README-assets/ex30.png" alt="Exemplo30">
 
-<img src="README-assets/ex33.png" alt="Exemplo30">
+<img src="README-assets/ex33.png" alt="Exemplo33">
 
 - Os livros não foram adicionados ainda pelo **FOR** no HTML, pois não há nenhum livro registrado no seu banco.
 
@@ -472,4 +477,8 @@ urlpatterns = [
 
 <img src="README-assets/ex35.png" alt="Exemplo35">
 
+---------------------------------------------------------------
 
+## 📗 Fase 5: Templates e Páginas HTML (static, partials, layout, media)
+
+> 🔔 # Nesta fase, você aprenderá a criar templates para renderizar páginas HTML e tornar sua aplicação mais dinâmica. Além disso, veremos como lidar com arquivos estáticos, criar templates parciais e layouts, e como gerenciar arquivos de mídia.

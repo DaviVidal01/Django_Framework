@@ -54,7 +54,7 @@ Agora, você está dentro do ambiente virtual e pode instalar as dependências e
 
 <img src="README-assets/ex01.png" alt="Exemplo01" />
 
-- 🔩 Lembrando que quando fechar o seu editor e abrir novamente, terá de ativar a venv (ambiente virtual) novamente seguindo a etapa 1.2.4
+- 🔩 Lembrando que quando fechar o seu editor e abrir novamente, terá de ativar a venv (ambiente virtual) novamente seguindo a etapa [**1.2.4**](#4-para-ativar-o-ambiente-virtual-utilize-os-seguintes-comandos-no-terminal-ou-prompt-de-comando)
 
 ### **1.3.** *Instalação do Django usando o Pip.*
 
@@ -322,7 +322,7 @@ admin.site.register(Livro)
 > - Password (again): 1234
 > - Confirmação se vou usar senha fraca: y
 
-- Agora quando você fazer o comando do **Runserver** que já foi ensinado na etapa **1.6.4**, vá na URL do seu navegador e adiciona `/admin` e faça o login da sua conta que você criou aqui no Django.
+- Agora quando você fazer o comando do **Runserver** que já foi ensinado na etapa [**1.6.3**](#3-agora-que-você-está-na-pasta-do-projeto-e-com-o-ambiente-virtual-ativado-você-pode-iniciar-o-servidor-de-desenvolvimento-com-o-seguinte-comando), vá na URL do seu navegador e adiciona `/admin` e faça o login da sua conta que você criou aqui no Django.
 
 <img src="README-assets/ex22.png" alt="Exemplo22">
 
@@ -380,7 +380,7 @@ urlpatterns = [
 > Agora, quando os usuários acessarem `/livros/` em seu site, a view *lista_livros* será chamada.
 > - **from . import views:** Importa da pasta atual (Website) tudo do arquivo views.py (Class, Funções, Métodos, etc.)
 > - **path('livros/', views.lista_livros, name='lista_livros'):** Para acessar a `views.lista_livros` é necessário que o usuário esteja na página da URL `livros/`, o nome dessa path é nomeada de `lista_livros`
->📌 *OBS:* A colocação de "," dentro do `urlpatterns` permite que possa ser criada várias `path` de uma vez, então é possível a criação de várias views e URLs para essas views em seu aplicativo.
+📌 *OBS:* A colocação de "," dentro do `urlpatterns` permite que possa ser criada várias `path` de uma vez, então é possível a criação de várias views e URLs para essas views em seu aplicativo.
 
 ### **4.3.** *Configurando URLs de Setup*
 
@@ -437,21 +437,21 @@ urlpatterns = [
 
 ##### 4. Testar a View
 
-- Agora, você pode iniciar o servidor de desenvolvimento do Django e testar sua view, utilize runserver para testar o seu site como foi ensinado no **1.6.4**
+- Agora, você pode iniciar o servidor de desenvolvimento do Django e testar sua view, utilize runserver para testar o seu site como foi ensinado no [**1.6.3**](#3-agora-que-você-está-na-pasta-do-projeto-e-com-o-ambiente-virtual-ativado-você-pode-iniciar-o-servidor-de-desenvolvimento-com-o-seguinte-comando)
 
-- Lembre-se de ativar a sua Venv que foi ensinado no **1.4.2**
+✔️ ▶ Lembre-se de ativar a sua Venv que foi ensinado no [**1.2.4**](#4-para-ativar-o-ambiente-virtual-utilize-os-seguintes-comandos-no-terminal-ou-prompt-de-comando)
 
 🚫 ***ERROR - Caso você não ative:***
 
 <img src="README-assets/ex29.png" alt="Exemplo29">
 
-- Lembre-se de deixar o seu Banco de Dados MySQL ligado (XAMPP) como foi ensinado no **2.2.2**
+✔️ ▶ Lembre-se de deixar o seu Banco de Dados MySQL ligado (XAMPP) como foi ensinado no [**2.2.2**](#2-ligando-o-xampp-apache-e-mysql)
 
 🚫 ***ERROR - Caso você não ligue:***
 
 <img src="README-assets/ex28.png" alt="Exemplo28">
 
-- Lembre-se de digitar a URL corretamente como ensinado no **3.4**
+✔️ ▶ Lembre-se de digitar a URL corretamente como imagem mostrada no [**3.4**](#34-criar-superusuário)
 
 🚫 ***ERROR - Caso você não digite:***
 

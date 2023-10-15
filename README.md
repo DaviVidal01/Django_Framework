@@ -1,6 +1,41 @@
-# Tutorial de Desenvolvimento Web com Django
+# 📚 - Tutorial de Desenvolvimento Web com Django
 
 > 👨‍💻 # Este repositório abriga um abrangente tutorial sobre o desenvolvimento web usando o framework Django. Aprenda passo a passo a criar um aplicativo web, desde a configuração inicial até o deploy em um ambiente de produção.
+
+## 📜 Sumário
+- [Fase 1: Configuração Inicial e Ambiente de Desenvolvimento](#-fase-1-configuração-inicial-e-ambiente-de-desenvolvimento)
+- - [1.1. Instalação do Python e Pip.](#11-instalação-do-python-e-pip)
+- - [1.2. Configuração de um ambiente virtual (Virtual Environment).](#12-configuração-de-um-ambiente-virtual-virtual-environment)
+- - [1.3. Instalação do Django usando o Pip.](#13-instalação-do-django-usando-o-pip)
+- - [1.4. Inicialização de um novo projeto Django.](#14-inicialização-de-um-novo-projeto-django)
+- - [1.5. Inicialização de um novo app Django.](#15-inicialização-de-um-novo-app-django)
+- - [1.6. Executando o servidor com Runserver](#16-executando-o-servidor-com-runserver)
+- [Fase 2: Estrutura de Diretórios e Primeiras Configurações](#-fase-2-estrutura-de-diretórios-e-primeiras-configurações)
+- - [2.1. Estrutura de Diretórios do Projeto](#21-estrutura-de-diretórios-do-projeto)
+- - [2.2. Configuração do Banco de Dados](#22-configuração-do-banco-de-dados)
+- - [2.3. Configuração do Banco de Dados no MySQL Workbench](#23-configuração-do-banco-de-dados-no-mysql-workbench)
+- - [2.4. Configuração do Banco de Dados no Django](#24-configuração-do-banco-de-dados-no-django)
+- - [2.5. Instalação de Pacotes Python para MySQL no Django](#25-instalação-de-pacotes-python-para-mysql-no-django)
+- [Fase 3: Models e Banco de Dados](#-fase-3-models-e-banco-de-dados)
+- - [3.1. Criar Modelos](#31-criar-modelos)
+- - [3.2. Migrações e Aplicação](#32-migrações-e-aplicação)
+- - [3.3. Django Admin](#33-django-admin)
+- - [3.4. Criar Superusuário](#34-criar-superusuário)
+- [Fase 4: Views e URLs](#-fase-4-views-e-urls)
+- - [4.1. Criar Views](#41-criar-views)
+- - [4.2. Definir URLs](#42-definir-urls)
+- - [4.3. Configurando URLs de Setup](#43-configurando-urls-de-setup)
+- - [4.4. Criar um Template](#44-criar-um-template)
+- [Fase 5: Templates e Páginas HTML (static, partials, layout, media)](-fase-5-templates-e-páginas-html-static-partials-layout-media)
+- [Fase 6: MVT (Model-View-Template) e Integração]() EM BREVE
+- [Fase 7: Administração do Django]() EM BREVE
+- [Fase 8: Formulários e Validação]() EM BREVE
+- [Fase 9: Autenticação e Autorização]() EM BREVE
+- [Fase 10: CRUD (Create, Read, Update, Delete)]() EM BREVE
+- [Fase 11: Testes e Depuração]() EM BREVE
+- [Fase 12: Deploy (Implantação) em Produção]() EM BREVE
+
+---------------------------------------------------------------
 
 ## 📗 Fase 1: Configuração Inicial e Ambiente de Desenvolvimento
 

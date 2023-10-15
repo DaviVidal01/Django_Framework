@@ -380,7 +380,7 @@ urlpatterns = [
 > Agora, quando os usuários acessarem `/livros/` em seu site, a view *lista_livros* será chamada.
 > - **from . import views:** Importa da pasta atual (Website) tudo do arquivo views.py (Class, Funções, Métodos, etc.)
 > - **path('livros/', views.lista_livros, name='lista_livros'):** Para acessar a `views.lista_livros` é necessário que o usuário esteja na página da URL `livros/`, o nome dessa path é nomeada de `lista_livros`
-📌 *OBS:* A colocação de "," dentro do `urlpatterns` permite que possa ser criada várias `path` de uma vez, então é possível a criação de várias views e URLs para essas views em seu aplicativo.
+>>📌 *OBS:* A colocação de "," dentro do `urlpatterns` permite que possa ser criada várias `path` de uma vez, então é possível a criação de várias views e URLs para essas views em seu aplicativo.
 
 ### **4.3.** *Configurando URLs de Setup*
 
@@ -416,7 +416,7 @@ urlpatterns = [
 
 <img src="README-assets/ex27.png" alt="Exemplo27">
 
-##### 3. No arquivo `lista_livros.html`, você pode usar os dados passados pela view para criar a página da web.
+##### 3. No arquivo `lista_livros.html`, você pode usar os dados passados pela view para criar a página da web:
 
 ```bash
 <!DOCTYPE html>
@@ -428,12 +428,20 @@ urlpatterns = [
     <h1>Lista de Livros</h1>
     <ul>
         {% for livro in livros %}
-        <li>{{ livro.título }} por {{ livro.autor }}</li>
+        <li>{{ livro.titulo }} por {{ livro.autor }}</li>
         {% endfor %}
     </ul>
 </body>
 </html>
 ```
+
+> - **{% for livro in livros %}:** Aqui ele cria um "x" com o nome de `livro`, esse x vai passar por todos os itens que haver no "nome-representativo" chamado `livros` que interliga na views a variável chamada `livros` que você criou na etapa [**4.1.2**](#2-crie-uma-view)
+>> 📌 *OBS:* Esse `{livros : livros}` que está na imagem de exemplo é igual a `{nome-representativo : variável}`, pois criamos um "nome-representativo" para referenciar no HTML a "variável" informada na views, que é a variável `livros = Livro.objects.all()`.
+
+<img src="README-assets/ex37.png" alt="Exemplo37">
+
+> - **{{ livro.titulo }}:** A lógica é parecida como as lógicas abordadas em programações da linguagem C, pegando um "x" que irá receber todos os valores de `titulo` 1 por vez e apresentarem todas 1 por vez no HTML. Isso é a mesma coisa com o `{{ livro.autor }}` também, é a mesma lógica de programação.
+> - **{% endfor %}:** O **FOR** só irá acabar quando TODOS os itens de cada campo informado dentro dele (por exemplo, `{{ livro.titulo }}`) forem apresentados.
 
 ##### 4. Testar a View
 

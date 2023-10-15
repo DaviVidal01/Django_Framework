@@ -304,6 +304,9 @@ from .models import Livro
 admin.site.register(Livro)
 ```
 
+> - **from .models import Livro:** Retira de dentro do arquivo `models.py` a class chamada `Livro`.
+> - **admin.site.register(Livro):** Indica que no painel de Administrador do Django será possível registrar dados na tabela chamada `Livro`.
+
 ### **3.4.** *Criar Superusuário*
 
 - Para acessar o painel de administração, você precisará criar um superusuário.
@@ -332,7 +335,7 @@ admin.site.register(Livro)
 
 ### **4.1.** *Criar Views*
 
-> 📺 # Views são funções ou classes que processam solicitações do navegador e retornam respostas. Vamos criar uma view simples que exibe uma lista de livros.
+- Views são funções ou classes que processam solicitações do navegador e retornam respostas. Vamos criar uma view simples que exibe uma lista de livros.
 
 ##### 1. Abra o arquivo `views.py` no diretório do seu aplicativo (por exemplo, `Website/views.py`).
 
@@ -348,15 +351,125 @@ def lista_livros(request):
     return render(request, 'lista_livros.html', {'livros': livros})
 ```
 
-> Nesta view, estamos obtendo todos os objetos de livro do banco de dados e passando-os para um template chamado lista_livros.html.
-> - **livros = Livro.objects.all():** Pega todos os `objects` de models chamado `Livro` e passa-os para dentro da variável `livros`
-> - **render(request, 'lista_livros.html'):** Ele renderizará usando o `request`, o template (site) chamado `lista_livros.html` de dentro da pasta `templates` *(OBS: vamos criar a pasta ainda)*
+> Nesta view, estamos obtendo todos os objetos de livro do banco de dados e passando-os para um template chamado *lista_livros.html*.
+> - **livros = Livro.objects.all():** Pega todos os `objects` de models chamado `Livro` e passa-os para dentro da variável `livros`.
+> - **render(request, 'lista_livros.html'):** Ele renderizará usando o `request`, o template (site) chamado `lista_livros.html` de dentro da pasta `templates` *(OBS: vamos criar a pasta ainda)*.
 > - **{'livros' : livros}:** Ele criará um dicionário chamado `livros` e pegará a variável `livros` e receber todas as informações guardadas dentro da variável.
 
 ### **4.2.** *Definir URLs*
 
-- As URLs mapeiam solicitações para views. Vamos definir uma URL que chama a view `lista_livros`.
+> 🔔 # As URLs mapeiam solicitações para views. Vamos definir uma URL que chama a view `lista_livros`.
 
-##### 1. Abra o arquivo `urls.py` no diretório do seu aplicativo (por exemplo, `Website/urls.py`).
+##### 1. Crie um arquivo chamado `urls.py` no diretório do seu aplicativo (por exemplo, `Website/urls.py`).
 
 <img src="README-assets/ex25.png" alt="Exemplo25">
+
+##### 2. Defina a URL dentro do arquivo `urls.py` no diretório do seu aplicativo:
+
+```bash
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('livros/', views.lista_livros, name='lista_livros'),
+]
+```
+
+> Agora, quando os usuários acessarem `/livros/` em seu site, a view *lista_livros* será chamada.
+> - **from . import views:** Importa da pasta atual (Website) tudo do arquivo views.py (Class, Funções, Métodos, etc.)
+> - **path('livros/', views.lista_livros, name='lista_livros'):** Para acessar a `views.lista_livros` é necessário que o usuário esteja na página da URL `livros/`, o nome dessa path é nomeada de `lista_livros`
+> 📌 *OBS:* A colocação de "," dentro do `urlpatterns` permite que possa ser criada várias `path` de uma vez, então é possível a criação de várias views e URLs para essas views em seu aplicativo.
+
+### **4.3.** *Configurando URLs de Setup*
+
+> 🔔 # Para que o setup do seu projeto reconheça que as configurações feitas nas URLs de dentro do seu aplicativo (Website) são oficiais, é necessário interligar uma ponte de acesso entre eles utilizando o `include`
+
+- Navegue até o setup do seu diretório Raiz/Pai, procure pelo arquivo chamado `urls.py` e faça as devidas interligações:
+
+```bash
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('Website.urls'))
+
+]
+```
+- Como no exemplo:
+
+<img src="README-assets/ex31.png" alt="Exemplo31">
+
+> - **path('', include('Website.urls')):** Ele faz um path dizendo que naturalmente todas as urls do aplicativo chamado `Website` localizados dentro do arquivo `urls` sejam acrescentadas/incluidas.
+
+### **4.4.** *Criar um Template*
+
+> 🔔 # Um template é um arquivo HTML que define como os dados são apresentados. Vamos criar um template para exibir a lista de livros.
+
+##### 1. Crie uma pasta chamada `templates` no diretório do seu aplicativo (por exemplo, `Website/templates`).
+
+<img src="README-assets/ex26.png" alt="Exemplo26">
+
+##### 2. Dentro da pasta templates, crie um arquivo chamado `lista_livros.html` (por exemplo, `Website/templates/lista_livros.html`)
+
+<img src="README-assets/ex27.png" alt="Exemplo27">
+
+##### 3. No arquivo `lista_livros.html`, você pode usar os dados passados pela view para criar a página da web.
+
+```bash
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Livros</title>
+</head>
+<body>
+    <h1>Lista de Livros</h1>
+    <ul>
+        {% for livro in livros %}
+        <li>{{ livro.título }} por {{ livro.autor }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+```
+
+##### 4. Testar a View
+
+- Agora, você pode iniciar o servidor de desenvolvimento do Django e testar sua view, utilize runserver para testar o seu site como foi ensinado no **1.6.4**
+
+- Lembre-se de ativar a sua Venv que foi ensinado no **1.4.2**
+
+🚫 ***ERROR - Caso você não ative:***
+<img src="README-assets/ex29.png" alt="Exemplo29">
+
+- Lembre-se de deixar o seu Banco de Dados MySQL ligado (XAMPP) como foi ensinado no **2.2.2**
+
+🚫 ***ERROR - Caso você não ligue:***
+<img src="README-assets/ex28.png" alt="Exemplo28">
+
+- Lembre-se de digitar a URL corretamente como ensinado no **3.4**
+
+🚫 ***ERROR - Caso você não digite:***
+<img src="README-assets/ex32.png" alt="Exemplo28">
+
+> 🗂️ - *OBS:* A página descreve quais URLs estão disponíveis
+
+- Depois de tudo estiver em ordem, você poderá acessar a página com o Link que aparecerá quando você realizar o comando de Runserver.
+
+<img src="README-assets/ex30.png" alt="Exemplo30">
+
+<img src="README-assets/ex33.png" alt="Exemplo30">
+
+- Os livros não foram adicionados ainda pelo **FOR** no HTML, pois não há nenhum livro registrado no seu banco.
+
+##### EXTRA. Tornar a página como principal (index), sem a necessidade de digitar `livros/` toda hora, para que ela possa aparecer sem essa necessidade.
+
+> 🎛️ # Para tornar uma das páginas do seu app como principal (index), é necessário que você reconfigure a URL dessa página, é bem simples:
+
+<img src="README-assets/ex34.png" alt="Exemplo34">
+
+- Dessa forma o site assim que iniciar o servidor, irá te levar até a página diretamente sem a digitação na url.
+
+<img src="README-assets/ex35.png" alt="Exemplo35">
+
+

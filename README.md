@@ -27,8 +27,17 @@
 - - [4.3. Configurando URLs de Setup](#43-configurando-urls-de-setup)
 - - [4.4. Criar um Template](#44-criar-um-template)
 - [Fase 5: Templates e Páginas HTML (static, partials, layout, media)](#-fase-5-templates-e-páginas-html-static-partials-layout-media)
-- [Fase 6: MVT (Model-View-Template) e Integração]() EM BREVE
-- [Fase 7: Administração do Django]() EM BREVE
+- - [5.1. Criar Templates HTML](#51-criar-templates-html)
+- - [5.2. Configurando Arquivos Estáticos](#52-configurando-arquivos-estáticos)
+- - [5.3. Arquivos Estáticos (CSS, JS, Imagens)](#53-arquivos-estáticos-css-js-imagens)
+- - [5.4. Uso de Modelos Parciais (Partial Templates):](#54-uso-de-modelos-parciais-partial-templates)
+- - [5.5. Templates e Layouts:](#55-templates-e-layouts)
+- - [5.6. Configurando Arquivos de Mídia e Imagens do Banco:](#56-configurando-arquivos-de-mídia-e-imagens-do-banco)
+- [Fase 6: MVT (Model-View-Template) e Integração](#-fase-6-mvt-model-view-template-e-integração)
+- - [6.1. Integrando Model, View e Template](#61-integrando-model-view-e-template)
+- - [6.2. Compreendendo a Integração](#62-compreendendo-a-integração)
+- - [6.3. Divisão das responsabilidades MVT](#63-divisão-das-responsabilidades-mvt)
+- [Fase 7: Administração do Django](#-fase-7-administração-do-django)
 - [Fase 8: Formulários e Validação]() EM BREVE
 - [Fase 9: Autenticação e Autorização]() EM BREVE
 - [Fase 10: CRUD (Create, Read, Update, Delete)]() EM BREVE

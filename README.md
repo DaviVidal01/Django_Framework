@@ -1006,3 +1006,56 @@ python -m pip install Pillow
 >> 📌 - Os contadores sempre são identificados como IDs, então para apresentar imagens ou itens separadamente, utiliza-se `{{ 1.capa.url }}` por exemplo. Isso funciona para outros recursos e campos também, tudo que é feito no banco deve a ser identificado a partir de sua **Primary_Key**.
 
 ---------------------------------------------------------------
+
+## 📗 Fase 6: MVT (Model-View-Template) e Integração
+
+> 🔔 # Nesta fase, você entenderá como o padrão MVT funciona no Django, que é semelhante ao famoso padrão MVC (Model-View-Controller), e como integrar os modelos, views e templates para criar páginas da web dinâmicas.
+
+> **Entendendo o Padrão MVT:**
+>> - `Model (Modelo):` Os modelos representam a estrutura dos dados e a lógica de negócios. Eles são responsáveis por interagir com o banco de dados e fornecer dados para as views.
+>> - `View (Visão):` As views são responsáveis por processar solicitações HTTP, interagir com os modelos para obter dados e renderizar as respostas. As views geralmente correspondem às páginas da web.
+>> - `Template (Modelo de Apresentação):` Os templates são arquivos HTML que definem como os dados serão apresentados. Eles usam a linguagem de modelo do Django para inserir dados dinâmicos nas páginas.
+
+### **6.1.** *Integrando Model, View e Template*
+
+> 📝 # Você já integrou a Model com o Template utilizando a Views nas etapas anteriores, então essa fase é apenas para estudar o MVT que já fizemos, vamos pegar uma parte dos códigos para analisa-los.
+
+`view.py:`
+```bash
+from django.shortcuts import render
+from .models import Livro
+
+def lista_livros(request):
+    livros = Livro.objects.all()
+    return render(request, 'myapp/lista_livros.html', {'livros': livros})
+```
+
+`lista_livros.html:`
+```bash
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Livros</title>
+</head>
+<body>
+    <h1>Lista de Livros</h1>
+    <ul>
+        {% for livro in livros %}
+        <li>{{ livro.título }} por {{ livro.autor }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+```
+
+### **6.2.** *Compreendendo a Integração*
+
+> - A view (view.py) chama o modelo (Livro) para obter dados dos livros adicionados.
+> - A view passa esses dados para o template.
+> - O template usa a linguagem de modelo do Django (as tags `{% %}` e `{{ }}`) para exibir os dados na página.
+
+- Dessa forma, o padrão MVT do Django permite que você crie páginas da web dinâmicas, onde os dados são buscados a partir dos modelos, processados nas views e apresentados nos templates.
+
+---------------------------------------------------------------
+
+## 📗 Fase 7: Administração do Django

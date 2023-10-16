@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Lista de Livros</title>
-</head>
-<body>
-    <h1>Lista de Livros</h1>
-    <ul>
-        {% for livro in livros %}
-        <li>{{ livro.titulo }} por {{ livro.autor }}</li>
-        {% endfor %}
-    </ul>
-</body>
+    <head>
+        <title>Lista de Livros</title>
+    </head>
+    <body>
+        <h1>Lista de Livros</h1>
+        <ul>
+            {% for livro in livros %}
+            <li>{{ livro.titulo }} por {{ livro.autor }}</li>
+            {% endfor %}
+        </ul>
+    </body>
 </html>

@@ -26,7 +26,7 @@
 - - [4.2. Definir URLs](#42-definir-urls)
 - - [4.3. Configurando URLs de Setup](#43-configurando-urls-de-setup)
 - - [4.4. Criar um Template](#44-criar-um-template)
-- [Fase 5: Templates e Páginas HTML (static, partials, layout, media)](-fase-5-templates-e-páginas-html-static-partials-layout-media)
+- [Fase 5: Templates e Páginas HTML (static, partials, layout, media)](#-fase-5-templates-e-páginas-html-static-partials-layout-media)
 - [Fase 6: MVT (Model-View-Template) e Integração]() EM BREVE
 - [Fase 7: Administração do Django]() EM BREVE
 - [Fase 8: Formulários e Validação]() EM BREVE
@@ -456,17 +456,17 @@ urlpatterns = [
 ```bash
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Lista de Livros</title>
-</head>
-<body>
-    <h1>Lista de Livros</h1>
-    <ul>
-        {% for livro in livros %}
-        <li>{{ livro.titulo }} por {{ livro.autor }}</li>
-        {% endfor %}
-    </ul>
-</body>
+    <head>
+        <title>Lista de Livros</title>
+    </head>
+    <body>
+        <h1>Lista de Livros</h1>
+        <ul>
+            {% for livro in livros %}
+            <li>{{ livro.titulo }} por {{ livro.autor }}</li>
+            {% endfor %}
+        </ul>
+    </body>
 </html>
 ```
 
@@ -525,3 +525,135 @@ urlpatterns = [
 ## 📗 Fase 5: Templates e Páginas HTML (static, partials, layout, media)
 
 > 🔔 # Nesta fase, você aprenderá a criar templates para renderizar páginas HTML e tornar sua aplicação mais dinâmica. Além disso, veremos como lidar com arquivos estáticos, criar templates parciais e layouts, e como gerenciar arquivos de mídia.
+
+### **5.1.** *Criar Templates HTML*
+
+- Os templates HTML são usados para renderizar páginas da web com dados dinâmicos. Vamos criar um template simples para exibir detalhes de um livro.
+
+##### 1. Crie um arquivo HTML chamado `livro_detalhes.html` em sua pasta de templates do aplicativo (por exemplo, `Website/templates/livros_detalhes.html`).
+
+<img src="README-assets/ex38.png" alt="Exemplo38">
+
+- Depois de criar o HTML (template), você terá de vincula-lo a uma View ou URLs, volte as etapas anteriores para rever como criar uma View e URL na [Fase 4: Views e URLs](#-fase-4-views-e-urls).
+
+<img src="README-assets/ex39.png" alt="Exemplo39">
+
+<img src="README-assets/ex40.png" alt="Exemplo40">
+
+##### 2. Adicione o seguinte conteúdo ao `livro_detalhes.html` como exemplo:
+
+```bash
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--CSS-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css">
+        <!--Titulo-->
+        <title>Detalhes do Livro</title>
+    </head>
+    <body>
+        <!--Header-->
+        <header class="d-flex justify-content-center py-3">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a href="../" class="nav-link" aria-current="page">Listar</a></li>
+              <li class="nav-item"><a href="../detalhes" class="nav-link">Detalhes</a></li>
+            </ul>
+        </header>
+        <!--Main-->
+        <main>
+            <img src="Exemplo-img.jpg" alt="">
+            {% for livro in livros %}
+            <h1 class="border-bottom border-danger">{{ livro.titulo }}</h1>
+            <p>Autor: {{ livro.autor }}</p>
+            <p>Data de Publicação: {{ livro.publicação }}</p>
+            <p>Número de Páginas: {{ livro.paginas }}</p>
+            {% endfor %}
+        </main>
+        <!--Footer-->
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <div class="col-md-4 d-flex align-items-center">
+              <a href="https://github.com/DaviVidal01">
+                <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/>
+              </a>
+              <span class="mb-3 mb-md-0 text-body-secondary">© 2023 WebBooks, copyright.</span>
+            </div>
+        
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+              <li class="ms-3"><a class="text-body-secondary" href="https://github.com/DaviVidal01"><img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/></a></li>
+              <li class="ms-3"><a href="https://github.com/DaviVidal01/"><img src="https://camo.githubusercontent.com/cf57d31040e997c7ab2d909aedf085957c88cffe5f6e24b5a7d4d317b65d3689/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f666f6c6c6f776572732f44617669566964616c30313f6c6162656c3d666f6c6c6f77267374796c653d736f6369616c" data-canonical-src="https://img.shields.io/github/followers/DaviVidal01?label=follow&amp;style=social" style="max-width: 100%;"></a></li>
+            </ul>
+          </footer>
+        <!--Scripts-->
+        <script src="bootstrap.bundle.min.js"></script>
+    </body>
+</html>
+```
+
+>📌 - É bem grande mesmo, pois estamos simulando um site completo agora, se você observar, terá comentários (<!--Comentários-->) marcando a posição de cada parte do HTML, por exemplo (CSS, Scripts, Header, Main, Footer, etc.). Se estiver trabalhando em equipe ou sozinho, é uma ótima forma de organizar o seu código.
+
+- Mas ainda há coisas faltando nesse template, colocamos exatamente as informações, mas o site ainda não aparece todas as informações que pedi, como CSS, JS ou Imagem.
+
+<img src="README-assets/ex41.png" alt="Exemplo41">
+
+> 💻 - *OBS:* Não iniciei o server para mostrar o Site, apenas abri o HTML, por isso aparece os "{{ livro.titulo }}", pois apenas abrir um arquivo HTML não irá funcionar o banco.
+
+### **5.2.** *Configurando Arquivos Estáticos*
+
+- Agora você precisa configurar seu aplicativo para servir arquivos estáticos corretamente durante o desenvolvimento e implantação.
+
+##### 1. Abra o arquivo de configuração `settings.py`, como por exemplo (`WebBooks/setup/settings.py`) e coloque o codigo `import os` no topo.
+
+<img src="README-assets/ex46.png" alt="Exemplo46">
+
+##### 2. Vá até a seção **TEMPLATES** e faça as seguintes alterações como no exemplo:
+
+<img src="README-assets/ex47.png" alt="Exemplo47">
+
+>🔩 - Isso mostrará ao Django que o seu TEMPLATES está localizado no seu app em um arquivo chamado `templates`
+
+##### 3. Vá até a seção **STATIC_URL** e faça as seguintes alterações como no exemplo:
+
+<img src="README-assets/ex49.png" alt="Exemplo49">
+
+>🔩 - Isso mostrará ao Django que o seu comando é `static`, que localiza a pasta através da URL `static/`, onde os arquivos bases estão localizados em `setup/static`
+
+<img src="README-assets/ex48.png" alt="Exemplo48">
+
+- Se já tiver arquivos dentro da pasta Static, ele vai perguntar se deseja copia-los, ele logo enviará a cópia para onde os arquivos static que você redirecionou na `settings.py`
+
+### **5.3.** *Arquivos Estáticos (CSS, JS, Imagens)*
+
+- Os arquivos estáticos, como CSS, JavaScript e imagens, podem ser usados para estilizar e enriquecer seu site. Vamos configurar os arquivos estáticos.
+
+##### 1. Crie uma pasta chamada `static` no diretório setup do seu projeto (por exemplo, `WebBooks/setup/static`)
+
+<img src="README-assets/ex42.png" alt="Exemplo42">
+
+##### 2. Dentro dela crie subpastas para armazenar arquivos estáticos como `css`, `js` e `img` logo depois adicione e carregue todos os arquivos CSS, JavaScript e Imagens nessas pastas conforme necessário.
+
+<img src="README-assets/ex43.png" alt="Exemplo43">
+
+##### 3. No HTML onde está sendo utilizado esses recursos vão ser atualizado os códigos para Imagens e Links (Hrefs, Src, Script, etc.)
+
+> - Coloque o código `{% load static %}` no topo do HTML, pois ele serve para recarregar todos os componentes de dentro da pasta Static.
+> - Modifique os codigos que contém Href, Src e Script que tiverem redirecionamento por diretórios como `src= 'css/style.css'`.
+> - Na modificação você colocará o código `{% static 'seu-redirecionamento' %}`, por favor, respeite os espaços e a forma que é escrita o código, senão falhará.
+
+- Exemplo:
+**Antes -**
+<img src="README-assets/ex44.png" alt="Exemplo44">
+
+**Depois -**
+<img src="README-assets/ex45.png" alt="Exemplo45">
+
+> 🗂️ - *OBS:* Não há necessidade de fazer isso com Links "http" como no exemplo, eles não são links de pasta. Agora modifique todos os códigos que contem esses recursos de Href, Src ou Script para que seu site funcione corretamente.
+
+##### 4. Abrir o terminal ou prompt de comando e navegar até o diretório Raiz/Pai e realizar o comando:
+
+```bash
+python ./manage.py collectstatic
+```
+
+### **5.4.** *Uso de Modelos Parciais (Partial Templates):*
+

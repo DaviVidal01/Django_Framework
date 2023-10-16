@@ -1056,6 +1056,37 @@ def lista_livros(request):
 
 - Dessa forma, o padrão MVT do Django permite que você crie páginas da web dinâmicas, onde os dados são buscados a partir dos modelos, processados nas views e apresentados nos templates.
 
+### **6.3.** *Divisão da responsabilidades MVT*
+
+##### 🗂️ Model (Modelo):
+- O modelo é responsável por lidar com os dados do aplicativo, definindo sua estrutura e manipulação.
+- Representa o acesso aos dados, incluindo a leitura, gravação e consulta de informações no banco de dados.
+- Os modelos no Django são representados como classes Python que definem a estrutura do banco de dados.
+- Os modelos são independentes da camada de interface do usuário e do controle de visualização.
+
+##### 👀 View (Visualização):
+- A camada de visualização lida com a lógica da aplicação e controla o fluxo de informações entre o modelo e o template.
+- As visualizações recebem solicitações do navegador do usuário, processam essas solicitações e interagem com o modelo para buscar ou salvar dados.
+- Eles também decidem qual template deve ser usado para renderizar a resposta.
+- As visualizações são escritas em Python e podem retornar respostas em HTML, JSON, XML ou outros formatos.
+
+##### 🖼️ Template (Modelo de Apresentação):
+- Os modelos de apresentação (templates) são responsáveis pela renderização de HTML e pela apresentação da interface do usuário.
+- Eles definem como os dados são exibidos nas páginas da web, combinando conteúdo estático e dinâmico.
+- Os templates utilizam uma linguagem de marcação especial chamada Django Template Language (DTL) para inserir variáveis, estruturas condicionais e loops nos modelos.
+- Os templates são projetados para serem reutilizáveis e podem incluir tags, filtros e blocos para facilitar a criação de páginas consistentes.
+
+##### 🎛️ Integração MVT:
+- Quando um usuário acessa uma página no aplicativo, uma solicitação é enviada para o servidor Django.
+- A visualização apropriada é mapeada para essa solicitação com base nas configurações de URL.
+- A visualização interage com o modelo, se necessário, para recuperar ou salvar dados no banco de dados.
+- A visualização seleciona o template a ser usado para renderizar a resposta.
+- O template usa o Django Template Language para preencher o conteúdo dinâmico com base nos dados do modelo.
+- A resposta é gerada e enviada de volta para o navegador do usuário.
+
+> 🔩 # Essa arquitetura facilita a separação de preocupações em um aplicativo Django. Os modelos cuidam dos dados, as visualizações tratam da lógica e as templates controlam a apresentação. Isso torna o desenvolvimento mais organizado e permite que diferentes partes do aplicativo sejam modificadas independentemente.
 ---------------------------------------------------------------
 
 ## 📗 Fase 7: Administração do Django
+
+> 🔔 # O Django fornece um painel de administração integrado que facilita a tarefa de gerenciar os dados de seu aplicativo. Nesta fase, você aprenderá a habilitar e personalizar o painel de administração do Django.

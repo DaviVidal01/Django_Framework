@@ -1056,7 +1056,7 @@ def lista_livros(request):
 
 - Dessa forma, o padrão MVT do Django permite que você crie páginas da web dinâmicas, onde os dados são buscados a partir dos modelos, processados nas views e apresentados nos templates.
 
-### **6.3.** *Divisão da responsabilidades MVT*
+### **6.3.** *Divisão das responsabilidades MVT*
 
 ##### 🗂️ Model (Modelo):
 - O modelo é responsável por lidar com os dados do aplicativo, definindo sua estrutura e manipulação.

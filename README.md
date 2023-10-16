@@ -552,16 +552,16 @@ urlpatterns = [
         <!--Titulo-->
         <title>Detalhes do Livro</title>
     </head>
-    <body>
+    <body class="bg-gray">
         <!--Header-->
-        <header class="d-flex justify-content-center py-3">
+        <header class="bg-gray d-flex justify-content-center py-3">
             <ul class="nav nav-pills">
               <li class="nav-item"><a href="../" class="nav-link" aria-current="page">Listar</a></li>
               <li class="nav-item"><a href="../detalhes" class="nav-link">Detalhes</a></li>
             </ul>
         </header>
         <!--Main-->
-        <main>
+        <main class="bg-gray">
             <img src="Exemplo-img.jpg" alt="">
             {% for livro in livros %}
             <h1 class="border-bottom border-danger">{{ livro.titulo }}</h1>
@@ -571,7 +571,7 @@ urlpatterns = [
             {% endfor %}
         </main>
         <!--Footer-->
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <footer class="bg-gray d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
             <div class="col-md-4 d-flex align-items-center">
               <a href="https://github.com/DaviVidal01">
                 <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/>
@@ -589,8 +589,8 @@ urlpatterns = [
     </body>
 </html>
 ```
-
->📌 - É bem grande mesmo, pois estamos simulando um site completo agora, se você observar, terá comentários (<!--Comentários-->) marcando a posição de cada parte do HTML, por exemplo (CSS, Scripts, Header, Main, Footer, etc.). Se estiver trabalhando em equipe ou sozinho, é uma ótima forma de organizar o seu código.
+> Aqui foi utilizado alguns recursos do framework [Bootstrap](https://getbootstrap.com/)
+>>📌 - É bem grande mesmo, pois estamos simulando um site completo agora, se você observar, terá comentários (`<!--Comentários-->`) marcando a posição de cada parte do HTML, por exemplo (CSS, Scripts, Header, Main, Footer, etc.). Se estiver trabalhando em equipe ou sozinho, é uma ótima forma de organizar o seu código.
 
 - Mas ainda há coisas faltando nesse template, colocamos exatamente as informações, mas o site ainda não aparece todas as informações que pedi, como CSS, JS ou Imagem.
 
@@ -618,10 +618,6 @@ urlpatterns = [
 
 >🔩 - Isso mostrará ao Django que o seu comando é `static`, que localiza a pasta através da URL `static/`, onde os arquivos bases estão localizados em `setup/static`
 
-<img src="README-assets/ex48.png" alt="Exemplo48">
-
-- Se já tiver arquivos dentro da pasta Static, ele vai perguntar se deseja copia-los, ele logo enviará a cópia para onde os arquivos static que você redirecionou na `settings.py`
-
 ### **5.3.** *Arquivos Estáticos (CSS, JS, Imagens)*
 
 - Os arquivos estáticos, como CSS, JavaScript e imagens, podem ser usados para estilizar e enriquecer seu site. Vamos configurar os arquivos estáticos.
@@ -641,6 +637,7 @@ urlpatterns = [
 > - Na modificação você colocará o código `{% static 'seu-redirecionamento' %}`, por favor, respeite os espaços e a forma que é escrita o código, senão falhará.
 
 - Exemplo:
+
 **Antes -**
 <img src="README-assets/ex44.png" alt="Exemplo44">
 
@@ -649,11 +646,363 @@ urlpatterns = [
 
 > 🗂️ - *OBS:* Não há necessidade de fazer isso com Links "http" como no exemplo, eles não são links de pasta. Agora modifique todos os códigos que contem esses recursos de Href, Src ou Script para que seu site funcione corretamente.
 
-##### 4. Abrir o terminal ou prompt de comando e navegar até o diretório Raiz/Pai e realizar o comando:
+- Seu codigo ficará assim:
+```bash
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--CSS-->
+        <link rel="stylesheet" href="{% static './css/style.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        <!--Titulo-->
+        <title>Detalhes do Livro</title>
+    </head>
+    <body class="bg-gray">
+        <!--Header-->
+        <header class="bg-gray d-flex justify-content-center py-3">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a href="../" class="nav-link" aria-current="page">Listar</a></li>
+              <li class="nav-item"><a href="../detalhes" class="nav-link">Detalhes</a></li>
+            </ul>
+        </header>
+        <!--Main-->
+        <main class="bg-gray">
+            <img width="60%" src="{% static './img/Exemplo-img.jpg' %}" alt="Livros">
+            {% for livro in livros %}
+                <h1 class="bg-gray border-bottom border-danger">{{ livro.titulo }}</h1>
+                <p class="bg-gray">Autor: {{ livro.autor }}</p>
+                <p>Data de Publicação: {{ livro.publicação }}</p>
+                <p>Número de Páginas: {{ livro.paginas }}</p>
+            {% endfor %}
+        </main>
+        <!--Footer-->
+        <footer class="bg-gray d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <div class="col-md-4 d-flex align-items-center">
+              <a href="https://github.com/DaviVidal01">
+                <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/>
+              </a>
+              <span class="mb-3 mb-md-0 text-body-secondary">© 2023 WebBooks, copyright.</span>
+            </div>
+        
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+              <li class="ms-3"><a class="text-body-secondary" href="https://github.com/DaviVidal01"><img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/></a></li>
+              <li class="ms-3"><a href="https://github.com/DaviVidal01/"><img src="https://camo.githubusercontent.com/cf57d31040e997c7ab2d909aedf085957c88cffe5f6e24b5a7d4d317b65d3689/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f666f6c6c6f776572732f44617669566964616c30313f6c6162656c3d666f6c6c6f77267374796c653d736f6369616c" data-canonical-src="https://img.shields.io/github/followers/DaviVidal01?label=follow&amp;style=social" style="max-width: 100%;"></a></li>
+            </ul>
+          </footer>
+        <!--Scripts-->
+        <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+</html>
+```
+> - **{% load static %}:** Isso carrega os arquivos estáticos para que você possa usar a tag `{% static %}` para referenciar seus arquivos CSS, JavaScript, imagens, etc.
+> - **{% static 'css/style.css' %}:** Isso carrega um arquivo CSS estático usando a tag `{% static %}`, pegando o arquivo que está dentro da pasta `static`.
+
+##### 4. Abrir o terminal ou prompt de comando e navegar até o diretório Raiz/Pai do seu projeto e realizar o comando:
 
 ```bash
 python ./manage.py collectstatic
 ```
 
+<img src="README-assets/ex48.png" alt="Exemplo48">
+
+- Se já tiver arquivos dentro da pasta Static, ele vai perguntar se deseja copia-los, ele logo enviará a cópia para onde os arquivos static que você redirecionou na `settings.py`
+
+- Por fim quando você iniciar o Runserver ensinado na etapa [**1.6.3**](#3-agora-que-você-está-na-pasta-do-projeto-e-com-o-ambiente-virtual-ativado-você-pode-iniciar-o-servidor-de-desenvolvimento-com-o-seguinte-comando), e depois digitar a URL `detalhes/`, seu site carregará todos os Statics, carregará o Banco e ficará assim:
+
+<img src="README-assets/ex51.png" alt="Exemplo51">
+
+<img src="README-assets/ex50.png" alt="Exemplo50">
+
 ### **5.4.** *Uso de Modelos Parciais (Partial Templates):*
 
+- Modelos parciais, também conhecidos como "partials," são partes reutilizáveis de um modelo HTML que você pode incluir em várias páginas. Eles são úteis para manter seu código limpo e evitar a duplicação de HTML.
+
+##### 1. Navegue até a pasta `templates` dentro do seu app e crie uma pasta chamada `partials` (exemplo `Website/templates/partials`).
+
+<img src="README-assets/ex52.png" alt="Exemplo52">
+
+##### 2. Crie 2 arquivos HTML dentro dessa pasta `partials`, um chamado `footer.html` e outro `header.html`, dentro de cada um deles será colocado os seguintes códigos.
+
+>🔔 # Lembra dos comentários do seu HTML? (exemplo, `<!--HEADER-->`), você pegará cada parte do código que está dentro do `<body>...</body>`, como o `<!--HEADER-->` e `<!--FOOTER-->`
+
+**Footer:**
+```bash
+    <footer class="bg-gray d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+          <a href="https://github.com/DaviVidal01">
+            <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/>
+          </a>
+            <span class="mb-3 mb-md-0 text-body-secondary">© 2023 WebBooks, copyright.</span>
+        </div>
+        
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-body-secondary" href="https://github.com/DaviVidal01"><img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/></a></li>
+            <li class="ms-3">
+                <a href="https://github.com/DaviVidal01/">
+                    <img src="https://camo.githubusercontent.com/cf57d31040e997c7ab2d909aedf085957c88cffe5f6e24b5a7d4d317b65d3689/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f666f6c6c6f776572732f44617669566964616c30313f6c6162656c3d666f6c6c6f77267374796c653d736f6369616c" data-canonical-src="https://img.shields.io/github/followers/DaviVidal01?label=follow&amp;style=social" style="max-width: 100%;">
+                </a>
+            </li>
+        </ul>
+    </footer>
+```
+
+**Header:**
+```bash
+    <header class="bg-gray d-flex justify-content-center py-3">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="../" class="nav-link" aria-current="page">Listar</a></li>
+            <li class="nav-item"><a href="../detalhes" class="nav-link">Detalhes</a></li>
+        </ul>
+    </header>
+```
+
+- Não esqueça de colocar o `{% load static %}` no topo dos HTMLs `header.html` e `footer.html`
+
+##### 3. Agora no lugar de onde você tirou o código de cada um desses 2 comentários, você substituirá por `{% include 'partials/nome-do-html' %}`, como está no exemplo:
+
+<img src="README-assets/ex53.png" alt="Exemplo53">
+
+-Se você testar com Runserver ensinado na etapa [**1.6.3**](#3-agora-que-você-está-na-pasta-do-projeto-e-com-o-ambiente-virtual-ativado-você-pode-iniciar-o-servidor-de-desenvolvimento-com-o-seguinte-comando), poderá ver quer o Footer e o Header estão todos ali.
+
+<img src="README-assets/ex54.png" alt="Exemplo54">
+
+- Outra forma de identifica-los é indo em Inspecionar Elemento (`botão direito do mouse`)
+
+<img src="README-assets/ex55.png" alt="Exemplo55">
+
+<img src="README-assets/ex56.png" alt="Exemplo56">
+
+##### EXTRA. Faça a mesma coisa com a página `lista_livros.html`
+
+```bash
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--CSS-->
+        <link rel="stylesheet" href="{% static './css/style.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        <!--Titulo-->
+        <title>Lista de Livros</title>
+    </head>
+    <body class="bg-gray">
+        <!--Header-->
+        {% include 'partials/header.html' %}
+
+        <!--Main-->
+        <main class="bg-gray">
+            <h1>Lista de Livros</h1>
+            <ul>
+                {% for livro in livros %}
+                <li>{{ livro.titulo }} por {{ livro.autor }}</li>
+                {% endfor %}
+            </ul>
+        </main>
+        <!--Footer-->
+        {% include 'partials/footer.html' %}
+
+        <!--Scripts-->
+        <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+</html>
+```
+
+> 📌 # Lembrando que Partials é bastante criado para que não haja repetições de códigos, caso você tenha várias páginas com o mesmo navbar(Header) e o mesmo footer, você pode estar utilizando partials além de várias outras para facilitar seu código e não necessitar escrever linhas e linhas repetidamente.
+
+### **5.5.** *Templates e Layouts:*
+
+> 🔔 # Para manter seu código mais organizado, você pode criar na pasta `templates` os layouts. Por exemplo, você pode criar um arquivo `base.html` que define o layout geral do site e usar tags de inclusão para incluir outros templates parciais.
+
+##### 1. Crie um arquivo HTMl chamado `base.html` em sua pasta de `templates`
+
+<img src="README-assets/ex57.png" alt="Exemplo57">
+
+##### 2. Coloque o conteúdo base que tem em todas as páginas do seu site em `base.html`, como o HEAD, BODY, SCRIPTS e CSS para que não haja repetição de código.
+
+```bash
+    {% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--CSS-->
+        <link rel="stylesheet" href="{% static './css/style.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        <!--Titulo-->
+        <title>{% block title %}WebBooks - {% endblock %}</title>
+    </head>
+    <body class="bg-gray">
+        {% block content %}
+        {% endblock %}
+        <!--Scripts-->
+        <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+</html>
+```
+
+> - **{% block content %}:** Este é um bloco de conteúdo que outras páginas estendidas podem preencher com seu próprio conteúdo, ela se estende até onde o codigo localizar o chamado `{% endblock %}`.
+> - **{% block title %}:** Este é um bloco que permite que outras páginas estendam este modelo e forneçam seu próprio título, ela se estende até onde o codigo localizar o chamado `{% endblock %}`.
+>>📌 # Outros templates podem estender o `base.html` e preencher os blocos de conteúdo.
+
+##### 3. Agora podemos substituir os códigos repetidos por `{% block content %}`(para determinar o início do conteúdo) e `{% endblock %}`(para determinar o fim do conteúdo)
+
+- É importante que o comando `{% extends 'base.html' %}` esteja no topo de tudo, pois ele determina qual é o Layout base para a página preencher os conteúdos.
+
+**lista_livros.html:**
+```bash
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block title %}Lista de Livros{% endblock %}</title>
+        <!--Header-->
+        {% include 'partials/header.html' %}
+
+        <!--Main-->
+        <main class="bg-gray">
+            <h1>Lista de Livros</h1>
+            <ul>
+                {% for livro in livros %}
+                <li>{{ livro.titulo }} por {{ livro.autor }}</li>
+                {% endfor %}
+            </ul>
+        </main>
+        <!--Footer-->
+        {% include 'partials/footer.html' %}
+{% endblock %}
+```
+
+**livro_detalhes.html:**
+```bash
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block title %}Livro Detalhes{% endblock %}</title>
+        <!--Header-->
+        {% include 'partials/header.html' %}
+
+        <!--Main-->
+        <main class="bg-gray">
+            <img width="60%" src="{% static './img/Exemplo-img.jpg' %}" alt="Livros">
+            {% for livro in livros %}
+                <h1 class="bg-gray border-bottom border-danger">{{ livro.titulo }}</h1>
+                <p class="bg-gray">Autor: {{ livro.autor }}</p>
+                <p>Data de Publicação: {{ livro.publicação }}</p>
+                <p>Número de Páginas: {{ livro.paginas }}</p>
+            {% endfor %}
+        </main>
+        <!--Footer-->
+        {% include 'partials/footer.html' %}
+{% endblock %}
+```
+
+- Depois de preencher corretamente e iniciar o Runserver ensinado na etapa [**1.6.3**](#3-agora-que-você-está-na-pasta-do-projeto-e-com-o-ambiente-virtual-ativado-você-pode-iniciar-o-servidor-de-desenvolvimento-com-o-seguinte-comando), você poderá ver que o site funcionará normalmente, pois as Partials e Layout (base.html) se juntam com os templates formando um "Quebra-Cabeça".
+
+<img src="README-assets/ex58.png" alt="Exemplo58">
+
+<img src="README-assets/ex59.png" alt="Exemplo59">
+
+> 🔔 # Dessa forma, você pode criar páginas HTML de maneira organizada, estendendo um modelo principal e preenchendo os blocos de conteúdo conforme necessário. Isso torna seu código mais modular e fácil de gerenciar.
+
+### **5.6.** *Configurando Arquivos de Mídia e Imagens do Banco:*
+
+- Arquivos de mídia, como imagens enviadas pelos usuários dentro do seu site, podem ser armazenados em uma pasta separada. Configure as configurações de mídia no `settings.py` que fica localizado na setup do seu site (exemplo, `WebBooks/setup/settings.py`).
+
+##### 1. Escreva os seguintes códigos nas últimas linhas de `settings.py`
+
+```bash
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+```
+
+> 🎛️ - Esse código faz com que o Django encontre a pasta chamada `media` dentro do seu diretório Raiz/Pai do projeto, e lá ele começará a armazenar dados e informações como imagens, arquivos, etc. Que forem adicionados pelos usuários de seu site, ou até mesmo pelos adm.
+
+##### 2. Ainda no diretório do seu `setup` procure o arquivo chamado `urls.py`, normalmente localizado abaixo do arquivo `settings.py` e escreva os seguintes códigos
+
+**No topo:**
+```bash
+from django.conf import settings
+from django.conf.urls.static import static
+```
+
+**Nas últimas linhas:**
+```bash
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+- Exemplo:
+
+<img src="README-assets/ex60.png" alt="Exemplo60">
+
+##### 3. Crie uma pasta chamada `media` dentro do diretório Raiz/Pai do seu projeto
+
+<img src="README-assets/ex61.png" alt="Exemplo61">
+
+- Agora você está pronto para usar arquivos de mídia em sua aplicação.
+
+
+##### 4. Vamos agora reconfigurar a `models.py` para que possa receber imagens adicionadas pelo SUPERUSER e armazena-las, além de exibi-las no site `lista_livros.html`
+
+**Models Atualizado:**
+```bash
+from django.db import models
+
+# Create your models here.
+
+class Livro(models.Model):
+    titulo = models.CharField(max_length=200)
+    autor = models.CharField(max_length=100)
+    capa = models.ImageField(default='', upload_to= './images')
+    #Dentro da pasta Media vai ser criada images que armazenará esses itens
+    publicação = models.DateField()
+    paginas = models.IntegerField()
+```
+
+- Realiza o `python ./manage.py makemigrations` e vai gerar um ERRO:
+
+<img src="README-assets/ex62.png" alt="Exemplo62">
+
+- Você irá baixar o Pillow, lembre-se de estar com a Venv ligada.
+```bash
+python -m pip install Pillow
+```
+
+- Agora realize o `makemigrations` e `migrate` para que a atualização do banco possa ser completada.
+
+<img src="README-assets/ex63.png" alt="Exemplo63">
+
+- Vamos atualizar também a página `lista_livros.html` para que ele possa exibir essas informações
+
+```bash
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block title %}Lista de Livros{% endblock %}</title>
+        <!--Header-->
+        {% include 'partials/header.html' %}
+
+        <!--Main-->
+        <main class="bg-gray">
+            <h1>Lista de Livros</h1>
+            <ul>
+                {% for livro in livros %}
+                <li>{{ livro.titulo }} por {{ livro.autor }}</li>
+                <li>
+                    {% if x.capa %}
+                        <img src="{{ x.capa.url }}" alt="capa-de-livros" width="10%">
+                    {% else %}
+                        <p>Capa não encontrada</p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </main>
+        <!--Footer-->
+        {% include 'partials/footer.html' %}
+{% endblock %}
+```
+
+> - **{{ x.capa.url }}:** O contador x pega as informações adicionadas no campo "capa" e redireciona sua URL para dentro do `src` assim apresentando todas as imagens por vez, por conta do contador estar dentro do **FOR**.
+>> 📌 - Os contadores sempre são identificados como IDs, então para apresentar imagens ou itens separadamente, utiliza-se `{{ 1.capa.url }}` por exemplo. Isso funciona para outros recursos e campos também, tudo que é feito no banco deve a ser identificado a partir de sua **Primary_Key**.
+
+---------------------------------------------------------------

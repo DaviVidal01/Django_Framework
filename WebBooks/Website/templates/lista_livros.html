@@ -1,14 +1,26 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Lista de Livros</title>
-    </head>
-    <body>
-        <h1>Lista de Livros</h1>
-        <ul>
-            {% for livro in livros %}
-            <li>{{ livro.titulo }} por {{ livro.autor }}</li>
-            {% endfor %}
-        </ul>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block title %}Lista de Livros{% endblock %}</title>
+        <!--Header-->
+        {% include 'partials/header.html' %}
+
+        <!--Main-->
+        <main class="bg-gray">
+            <h1>Lista de Livros</h1>
+            <ul>
+                {% for livro in livros %}
+                <li>{{ livro.titulo }} por {{ livro.autor }}</li>
+                <li>
+                    {% if x.capa %}
+                        <img src="{{ x.capa.url }}" alt="capa-de-livros" width="10%">
+                    {% else %}
+                        <p>Capa não encontrada</p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </main>
+        <!--Footer-->
+        {% include 'partials/footer.html' %}
+{% endblock %}

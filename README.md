@@ -1099,3 +1099,153 @@ def lista_livros(request):
 ## 📗 Fase 7: Administração do Django
 
 > 🔔 # O Django fornece um painel de administração integrado que facilita a tarefa de gerenciar os dados de seu aplicativo. Nesta fase, você aprenderá a habilitar e personalizar o painel de administração do Django.
+
+### **7.1.** *Habilitar o Painel de Administração*
+
+> 💼 # Nós já criamos um superusuário e colocando os comandos no arquivo `admin.py` de dentro do seu app, é só seguir as etapas [3.3](#33-django-admin) e [3.4](#34-criar-superusuário).
+
+- Mas escrevendo apenas `admin.register(Livro)` não possibilitará a criação de novos Livros, apenas conseguirá ver todos os registros de cada Livro, então adicione `.site` no meio como no exemplo:
+
+`admin.py:`
+
+<img src="README-assets/ex64.png" alt="Exemplo64">
+
+**Visualização:**
+
+<img src="README-assets/ex65.png" alt="Exemplo65">
+
+### **7.2.** *Personalizar a Interface de Administração*
+
+> 💼 # Você pode personalizar a interface de administração do Django de várias maneiras, como a seguir:
+
+##### 1. Conhecendo o ModelAdmin:
+
+- **ModelAdmin:** Você pode criar uma classe `ModelAdmin` para personalizar a forma como os modelos são exibidos no painel de administração. Por exemplo, você pode definir campos para serem exibidos, filtros e ações personalizadas.
+
+```bash
+from django.contrib import admin
+from .models import Livro
+
+@admin.register(Livro)
+class LivroAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'autor', 'publicação')
+    list_filter = ('autor', 'publicação')
+```
+
+**Visualização:**
+
+<img src="README-assets/ex66.png" alt="Exemplo66">
+
+> - **list_display = ('titulo', 'autor', 'publicação'):** Ele acaba exibindo as informações de Titulo, Autor e Publicação na página do Admin, como informações principais.
+> - **list_filter = ('autor', 'publicação'):** É utilizado o Autor e Publicação (data) para filtrar os Livros, você consegue filtrar vários livros que foram feitos por 1 Autor ou em uma data/ano específico.
+
+> 📚 *OBS:* O livro que está adicionado, foi criado para a realização do teste, vamos aprender a adicionar itens no Django Admin na próxima etapa.
+
+##### 2. Algumas personalizações interessantes:
+
+> 🔩 # É importante lembrar que se o seu models (banco de dados) estiver com mais detalhes e campos, ficará mais interessante usar e abusar dessas personalizações.
+
+- No nosso caso, apresentarei apenas as personalizações que ficaram bons para esse Models Simples
+
+`Filtros Simples:`
+```bash
+    list_filter = ('autor', 'publicação')
+    #Aqui ele criará filtros com esses 2 campos
+```
+<img src="README-assets/ex67.png" alt="Exemplo67">
+
+``Lista de Apresentação`:`
+```bash
+    list_display = ('titulo', 'autor', 'publicação')
+    #Aqui ele apresentará esses 3 campos
+```
+<img src="README-assets/ex68.png" alt="Exemplo68">
+
+`Barra de Pesquisa:`
+```bash
+    search_fields = ('titulo', 'autor')
+    #Aqui ele só procurará pesquisas referentes a esses 2 campos.
+```
+<img src="README-assets/ex69.png" alt="Exemplo69">
+
+`Complementação de Dados:`
+```bash
+    fieldsets = [
+        ('Informações Básicas', {'fields': ['titulo', 'autor', 'publicação']}),
+        ('Detalhes Adicionais', {'fields': ['paginas', 'capa']}),
+    ]
+    #Aqui ele separará o formulário do admin com 2 etapas "Informações Básicas" e "Detalhes Adicionais"
+```
+<img src="README-assets/ex70.png" alt="Exemplo70">
+
+**Como o código é escrito:**
+
+<img src="README-assets/ex71.png" alt="Exemplo71">
+
+- Para mais personalizações, você pode estar pesquisando na documentação do [Django Admin](https://docs.djangoproject.com/en/4.2/ref/contrib/admin/) ou pesquisando em outras fontes.
+
+### **7.3.** *Adicionar Informações no Banco de Dados*
+
+> 📚 # Essa etapa não tem muito segredo, é uma interface bem simples de se usar.
+
+<img src="README-assets/ex72.png" alt="Exemplo72">
+
+- Você possui 2 opções, "Add" ou "Change", `Add` servirá para adicionar novos itens enquanto o `Change` servirá para edita-los.
+
+<img src="README-assets/ex73.png" alt="Exemplo73">
+
+> 📚 # Nesse ambiente você poderá preencher as lacunas com as informações necessárias e depois escolher entre as 3 opções
+>> - **Salvar:** Salvar e Sair.
+>> - **Salvar e Adicionar Outro:** Salvar e começar a editar outra ficha.
+>> - **Salvar e Continuar Editando:** Salvar e continuar na mesma ficha, caso ela seja grande demais ou queira usar para testes.
+
+- Quando salvar e abrir o Workbench MySQL, poderá ver que seus itens adicionados estaram no banco registrados.
+
+**Para ver siga as instruções:**
+
+`Passo 1: Abrir o Servidor`
+<img src="README-assets/ex74.png" alt="Exemplo74">
+
+`Passo 2: Entrar no Schema`
+<img src="README-assets/ex75.png" alt="Exemplo75">
+
+`Passo 3: Localizar o seu Schema`
+<img src="README-assets/ex76.png" alt="Exemplo76">
+
+`Passo 4: Clicar na mini-tabela`
+<img src="README-assets/ex77.png" alt="Exemplo77">
+
+`Passo 5: Admirar seu item no banco`
+<img src="README-assets/ex78.png" alt="Exemplo78">
+
+### **7.4.** *Autorizações e Usuários*
+
+> 🔔 # Essa parte é configurada quando se está trabalhando em equipe para algum serviço grande, podendo permitir ou negar acesso de certos usuários que estão tentando entrar no `admin/`
+
+##### 👤 Conceitos de Users(Usuários):
+
+- Os "Users" (Usuários) se referem aos indivíduos que têm acesso à sua aplicação. Cada usuário possui uma conta única, geralmente identificada por um nome de usuário (username) e uma senha.
+- Usuários são responsáveis por autenticar na aplicação (fazer login) e interagir com funcionalidades específicas com base nas permissões concedidas a eles.
+- No Django, o modelo de usuário padrão já está incluído e é altamente configurável. Você pode adicionar informações personalizadas aos perfis de usuário, como nome completo, endereço de e-mail, etc.
+- Os usuários também podem ser atribuídos a grupos para facilitar o gerenciamento de permissões.
+
+##### 👥 Conceitos de Groups(Grupos):
+
+- Os "Groups" (Grupos) são conjuntos lógicos de permissões. Eles são usados para organizar usuários com permissões semelhantes em categorias ou grupos.
+- Em vez de atribuir permissões a cada usuário individualmente, você pode criar grupos com permissões predefinidas e, em seguida, atribuir usuários a esses grupos.
+- Isso simplifica a administração de permissões, especialmente quando você tem muitos usuários com as mesmas permissões.
+- Por exemplo, você pode criar grupos como "Admins," "Editores," "Leitores," e atribuir as permissões apropriadas a cada grupo.
+- Em seguida, você pode adicionar ou remover usuários desses grupos para conceder ou revogar permissões em lote.
+
+##### 🎛️ Funcionamento Prático:
+
+- No Django admin, você pode gerenciar usuários e grupos na seção "Authentication and Authorization".
+- Você pode criar, editar e excluir usuários, bem como criar e gerenciar grupos.
+- Ao criar ou editar um usuário, você pode definir seu nome de usuário, senha e outras informações. Além disso, você pode especificar a qual grupo o usuário pertence.
+- Ao configurar permissões para um grupo, você define o que os usuários desse grupo podem fazer em relação aos modelos (tabelas do banco de dados) da sua aplicação. Isso inclui permissões de visualização, adição, alteração e exclusão.
+- No modelo padrão de autenticação do Django, há grupos predefinidos, como "Admin," "Staff," e "Superuser," cada um com diferentes conjuntos de permissões. Você pode personalizar esses grupos ou criar novos de acordo com suas necessidades.
+
+> 🔔 # Agora você pode usar o painel de administração para adicionar, editar e excluir registros de seu banco de dados de forma conveniente. Nesta fase, você aprendeu a habilitar e personalizar o painel de administração do Django. Na próxima fase, exploraremos como criar formulários e lidar com validação de dados.
+---------------------------------------------------------------
+
+## 📗 Fase 8: Formulários e Validação

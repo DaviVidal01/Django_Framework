@@ -12,8 +12,8 @@
                 {% for livro in livros %}
                 <li>{{ livro.titulo }} por {{ livro.autor }}</li>
                 <li>
-                    {% if x.capa %}
-                        <img src="{{ x.capa.url }}" alt="capa-de-livros" width="10%">
+                    {% if livro.capa %}
+                        <img src="{{ livro.capa.url }}" alt="capa-de-livros" width="10%">
                     {% else %}
                         <p>Capa não encontrada</p>
                     {% endif %}

@@ -357,6 +357,10 @@ admin.site.register(Livro)
 
 - No terminal, dentro do diretório do projeto, execute o seguinte comando e siga as instruções para criar um superusuário, e depois preencha os parâmetros com nome e senha que você não esquecerá, se preferir pode usar como no exemplo:
 
+```bash
+python manage.py createsuperuser
+```
+
 <img src="README-assets/ex21.png" alt="Exemplo21">
 
 > 🔩 - O Password é invisível por questões de segurança, o Email pode ser aleatório ou o seu oficial, as informações colocadas no exemplo são:
@@ -997,8 +1001,8 @@ python -m pip install Pillow
                 {% for livro in livros %}
                 <li>{{ livro.titulo }} por {{ livro.autor }}</li>
                 <li>
-                    {% if x.capa %}
-                        <img src="{{ x.capa.url }}" alt="capa-de-livros" width="10%">
+                    {% if livro.capa %}
+                        <img src="{{ livro.capa.url }}" alt="capa-de-livros" width="10%">
                     {% else %}
                         <p>Capa não encontrada</p>
                     {% endif %}
@@ -1011,7 +1015,7 @@ python -m pip install Pillow
 {% endblock %}
 ```
 
-> - **{{ x.capa.url }}:** O contador x pega as informações adicionadas no campo "capa" e redireciona sua URL para dentro do `src` assim apresentando todas as imagens por vez, por conta do contador estar dentro do **FOR**.
+> - **{{ livro.capa.url }}:** O contador "livro" pega as informações adicionadas no campo "capa" e redireciona sua URL para dentro do `src` assim apresentando todas as imagens por vez, por conta do contador estar dentro do **FOR**.
 >> 📌 - Os contadores sempre são identificados como IDs, então para apresentar imagens ou itens separadamente, utiliza-se `{{ 1.capa.url }}` por exemplo. Isso funciona para outros recursos e campos também, tudo que é feito no banco deve a ser identificado a partir de sua **Primary_Key**.
 
 ---------------------------------------------------------------
@@ -1218,6 +1222,14 @@ class LivroAdmin(admin.ModelAdmin):
 `Passo 5: Admirar seu item no banco`
 <img src="README-assets/ex78.png" alt="Exemplo78">
 
+`Passo 6: Realizar Runserver e ver seus itens no site`
+
+**lista_livros:**
+<img src="README-assets/ex82.png" alt="Exemplo82">
+
+**livro_detalhes:**
+<img src="README-assets/ex83.png" alt="Exemplo83">
+
 ### **7.4.** *Autorizações e Usuários*
 
 > 🔔 # Essa parte é configurada quando se está trabalhando em equipe para algum serviço grande, podendo permitir ou negar acesso de certos usuários que estão tentando entrar no `admin/`
@@ -1245,7 +1257,224 @@ class LivroAdmin(admin.ModelAdmin):
 - Ao configurar permissões para um grupo, você define o que os usuários desse grupo podem fazer em relação aos modelos (tabelas do banco de dados) da sua aplicação. Isso inclui permissões de visualização, adição, alteração e exclusão.
 - No modelo padrão de autenticação do Django, há grupos predefinidos, como "Admin," "Staff," e "Superuser," cada um com diferentes conjuntos de permissões. Você pode personalizar esses grupos ou criar novos de acordo com suas necessidades.
 
+<img src="README-assets/ex79.png" alt="Exemplo79">
+
 > 🔔 # Agora você pode usar o painel de administração para adicionar, editar e excluir registros de seu banco de dados de forma conveniente. Nesta fase, você aprendeu a habilitar e personalizar o painel de administração do Django. Na próxima fase, exploraremos como criar formulários e lidar com validação de dados.
 ---------------------------------------------------------------
 
 ## 📗 Fase 8: Formulários e Validação
+
+> 🔔 # Nesta fase, você aprenderá como criar formulários para coletar dados do usuário e como realizar a validação desses dados.
+
+### **8.1.** *Criando um Formulário*
+
+- Para criar um formulário, você deve criar uma classe que herde de `forms.Form`. Vamos criar um exemplo de formulário para adicionar novos livros:
+
+##### 1. Crie e abra o arquivo `forms.py` em seu aplicativo (por exemplo, `Website/forms.py`).
+
+<img src="README-assets/ex80.png" alt="Exemplo80">
+
+##### 2. Crie um formulário para adicionar novos livros
+
+- Os campos de dentro de `LivroForm` devem ser iguais aos que foram criados no `models.py`, 'titulo', 'autor', 'publicação', 'paginas' e 'capa'.
+
+```bash
+from django import forms
+
+class LivroForm(forms.Form):
+    titulo = forms.CharField(label='Título', max_length=100)
+    autor = forms.CharField(label='Autor', max_length=100)
+    publicação = forms.DateField(label='Data de Publicação')
+    paginas = forms.IntegerField(label='Número de Páginas')
+    capa = forms.ImageField(label='Capa do Livro')
+```
+
+> - **forms.Form:** Ele importa recursos de `forms`, recursos esses guardados em `Form` e adiciona dentro da `class`.
+> - **forms.CharField:** Pega de `forms` a ferramenta chamada `CharField` que registra Caracteres.
+> - **forms.DateField:** Pega de `forms` a ferramenta chamada `DateField` que registra Datas.
+> - **forms.IntegerField:** Pega de `forms` a ferramenta chamada `IntegerField` que registra Números Inteiros.
+> - **forms.ImageField:** Pega de `forms` a ferramenta chamada `ImageField` que registra arquivos Imagens
+>> Mais informações de ferramentas de armazenamento no banco de dados `Field` estão na documentação do [Django Models Field References](https://docs.djangoproject.com/en/4.2/ref/models/fields/)
+
+### **8.2.** *Renderizando o Formulário em uma View*
+
+- Agora que você criou o formulário, você pode renderizá-lo em uma view.
+
+##### 1. Abra o arquivo `views.py` em seu aplicativo.
+
+##### 2. Importe o formulário que você criou no topo do código e adiciona ao lado de "`render`" um chamado `redirect` para redirecionamento de páginas:
+
+**Ficará assim:**
+```bash
+from django.shortcuts import render, redirect
+from .models import Livro
+from .forms import LivroForm
+```
+##### 3. Crie uma view que renderiza o formulário:
+
+```bash
+def adicionar_livro(request):
+    if request.method == 'POST':
+        livro_form = LivroForm(request.POST, request.FILES)
+        if livro_form.is_valid():
+            novo_livro = Livro(
+                titulo= livro_form.cleaned_data['titulo'],
+                autor= livro_form.cleaned_data['autor'],
+                publicação= livro_form.cleaned_data['publicação'],
+                paginas= livro_form.cleaned_data['paginas'],
+                capa = livro_form.cleaned_data['capa']
+            )
+            novo_livro.save() 
+
+            return redirect('lista_livros')
+    else:
+        livro_form = LivroForm()
+
+    return render(request, 'adicionar_livro.html', {'livro_form': livro_form})
+```
+
+> - **def adicionar_livro(request):** Isso define uma função de view chamada `adicionar_livro` que é chamada quando alguém acessa a URL correspondente.
+> - **if request.method == 'POST':** Esta linha verifica se a solicitação é uma solicitação `POST`. Em Django, isso geralmente é usado para processar formulários enviados. Se a solicitação for um `POST`, significa que alguém enviou um formulário de adição de livro.
+> - **livro_form = LivroForm(request.POST, request.FILES):** Aqui, estamos criando uma instância do formulário `LivroForm` com os dados da solicitação `POST`. Estamos passando tanto `request.POST` quanto `request.FILES`, porque este formulário inclui um campo de upload de arquivo para a *capa do livro* e o `request.FILES` contribui para o tratamento desses arquivos.
+> - **if livro_form.is_valid():** Esta linha verifica se os dados fornecidos no formulário são válidos de acordo com as regras definidas no formulário `LivroForm`. Se o formulário for válido, isso significa que os dados do livro são preenchidos corretamente.
+> - **novo_livro = Livro(...):** Aqui, estamos criando uma instância do modelo `Livro` com base nos dados fornecidos no formulário *(Os campos tem de terem o mesmo nome que o Formulário)*. Estamos pegando os valores do 'título', 'autor', 'data de publicação', 'número de páginas' e a 'capa' do formulário e atribuindo-os a um novo objeto `Livro`.
+> - **novo_livro.save():** Esta linha salva o novo livro no banco de dados. Após a execução desta linha, o livro será armazenado permanentemente no banco de dados.
+> - **return redirect('lista_livros'):** Após salvar o livro com sucesso, redirecionamos o usuário para a página '`lista_livros`', que exibirá a lista atualizada de livros.
+> - **else:** Se a solicitação não for um `POST`, isso significa que é a primeira vez que alguém acessa a página ou enviou um formulário inválido.
+> - **livro_form = LivroForm():** Aqui, estamos criando uma instância vazia do formulário `LivroForm`. Isso é feito para exibir um formulário em branco para o usuário quando ele acessa a página pela primeira vez.
+> - **return render(request, 'adicionar_livro.html', {'livro_form': livro_form}):** Se a solicitação não for um `POST`, estamos renderizando a página '`adicionar_livro.html`' e passando o formulário `livro_form` como contexto. Isso exibe o formulário em branco para o usuário, para que possa ser repreenchido corretamente.
+
+### **8.3.** *Criando um Template para o Formulário*
+
+- Agora você precisa criar um template HTML para o formulário. Vamos criar um arquivo chamado `adicionar_livro`.html em sua pasta de templates.
+
+<img src="README-assets/ex81.png" alt="Exemplo81">
+
+```bash
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block title %}Adicionar Livro{% endblock %}</title>
+    <!--Header-->
+    {% include 'partials/header.html' %}
+    <main>
+        <h1>Adicionar Livro</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ livro_form.as_p }}
+            <button type="submit">Adicionar Livro</button>
+        </form>
+    </main>
+    <!--Footer-->
+    {% include 'partials/footer.html' %}
+{% endblock %}
+```
+> - **method="post" enctype="multipart/form-data":** Aqui, você está criando um elemento de formulário HTML usando a tag `<form>`. O atributo `method` está definido como "post", o que significa que o formulário será enviado como uma solicitação `POST` quando o usuário o enviar. O atributo `enctype` está definido como "multipart/form-data". Isso é necessário quando você tem campos de entrada do tipo "file" (como o campo de upload de imagem), pois permite o envio de arquivos binários. O valor "multipart/form-data" é usado para formulários que contêm campos de upload de arquivo.
+> - **{% csrf_token %}**: Esta é uma tag do Django template que insere um token de segurança `CSRF (Cross-Site Request Forgery)` no formulário. Isso é importante para proteger seu aplicativo contra ataques `CSRF`. Quando o formulário é enviado, o Django verifica se o token é válido.
+> - **{{ livro_form.as_p }}**: Esta é outra tag do Django template. `livro_form` é uma instância do seu formulário `LivroForm`. `as_p` é um método que renderiza o formulário com cada campo `(título, autor, etc.)` em um parágrafo `(<p>)`. Isso cria uma representação simples do formulário, onde cada campo do formulário é exibido em um novo parágrafo.
+> - **type="submit"**: Este é colocado em um botão de envio no formulário. Quando o usuário clica neste botão, o formulário é enviado para o servidor. O atributo type está definido como "submit", o que significa que este botão é usado para enviar o formulário. O texto "Adicionar Livro" é o rótulo do botão exibido para o usuário.
+>> 🎨 OBS: Tem várias outras formas de criar Inputs personalizados, utilizando CSS/HTML, além de outras formas de apresentar o formulário, basta usar a criatividade.
+
+### **8.4.** *Personalizando Formulário Template*
+
+- Você pode personalizar a aparência dos campos do formulário usando CSS. Vou fornecer um exemplo de como você pode criar inputs com labels mais estilizados 
+
+**adicionar_livro.html:** (Cole onde fica o form)
+```bash
+<form method="post" enctype="multipart/form-data" action="{% url 'adicionar_livro' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="{{ livro_form.titulo.id_for_label }}">Título:</label>
+        {{ livro_form.titulo }}
+    </div>
+    <div class="form-group">
+        <label for="{{ livro_form.autor.id_for_label }}">Autor:</label>
+        {{ livro_form.autor }}
+    </div>
+    <div class="form-group">
+        <label for="{{ livro_form.publicacao.id_for_label }}">Data de Publicação:</label>
+        {{ livro_form.publicacao }}
+    </div>
+    <div class="form-group">
+        <label for="{{ livro_form.paginas.id_for_label }}">Número de Páginas:</label>
+        {{ livro_form.paginas }}
+    </div>
+    <div class="form-group">
+        <label for="{{ livro_form.capa.id_for_label }}">Capa do Livro:</label>
+        {{ livro_form.capa }}
+    </div>
+    <button type="submit">Adicionar Livro</button>
+</form>
+```
+
+**style.css:** (Cole isso nos dois arquivos style.css localizado nas 2 pastas STATIC criadas)
+```bash
+/* Estilos gerais para o formulário */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+}
+
+/* Estilos para os inputs */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Estilos para o botão */
+button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+```
+
+- Realize o comando e depois o Runserver:
+```bash
+python manage.py collectstatic
+```
+<img src="README-assets/ex84.png" alt="Exemplo84">
+
+> - **action="{% url 'adicionar_livro' %}"**: O atributo action em uma tag `<form>` define para onde os dados do formulário serão enviados quando o usuário o submeter. Neste caso, "`{% url 'adicionar_livro' %}`" é uma tag do Django que resolve dinamicamente a URL para a view chamada '`adicionar_livro`'. Isso significa que quando o formulário é enviado, os dados serão processados pela view chamada '`adicionar_livro`'.
+> - **for="{{ livro_form.autor.id_for_label }}"**: Esse é um atributo for de uma tag `<label>`. As tags `<label>` são usadas para rotular campos de entrada em um formulário. Neste caso, o atributo for está configurado para o campo '`autor`' do formulário `(livro_form.autor)`. O valor `livro_form.autor.id_for_label` é uma forma dinâmica de gerar um ID para o campo de entrada '`autor`'. Isso está relacionado à acessibilidade, permitindo que a etiqueta esteja associada corretamente ao campo de entrada. Dessa forma, quando o usuário clica no rótulo, o foco é direcionado para o campo '`autor`'.
+> - **{{ livro_form.autor }}**: Esta é uma variável do Django template que renderiza o campo de entrada '`autor`' do formulário. O que é renderizado depende do tipo do campo '`autor`' em seu formulário. Se for um campo `CharField`, por exemplo, isso renderizará um campo de texto de entrada. Se for um campo `DateField`, renderizará um campo de entrada de data. O Django gera automaticamente o HTML necessário para o campo, com base nas configurações do campo no formulário.
+
+### **8.5.** *Mapear URLs*
+
+- Vamos agora para o arquivo `urls.py` do seu aplicativo.
+
+**urls.py:**
+```bash
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.lista_livros, name='lista_livros'),
+    path('detalhes/', views.livro_detalhes, name="livro_detalhes"),
+    # ----- FORM Livro
+    path('adicionar/', views.adicionar_livro, name="adicionar_livro"),
+]
+```
+
+>> 🎨 # OBS: Foi colocado um comentário chamado FORM livro, para poder separar qual é a função daquela URL, isso deixa mais organizado
+
+---------------------------------------------------------------
+
+## 📗 Fase 9: Autenticação e Autorização

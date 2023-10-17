@@ -38,8 +38,13 @@
 - - [6.2. Compreendendo a Integração](#62-compreendendo-a-integração)
 - - [6.3. Divisão das responsabilidades MVT](#63-divisão-das-responsabilidades-mvt)
 - [Fase 7: Administração do Django](#-fase-7-administração-do-django)
-- [Fase 8: Formulários e Validação]() EM BREVE
-- [Fase 9: Autenticação e Autorização]() EM BREVE
+- [Fase 8: Formulários e Validação](#-fase-8-formulários-e-validação)
+- - [8.1. Criando um Formulário](#81-criando-um-formulário)
+- - [8.2. Renderizando o Formulário em uma View](#82-renderizando-o-formulário-em-uma-view)
+- - [8.3. Criando um Template para o Formulário](#83-criando-um-template-para-o-formulário)
+- - [8.4. Personalizando Formulário Template](#84-personalizando-formulário-template)
+- - [8.5. Mapear URLs](#85-mapear-urls)
+- [Fase 9: Autenticação e Autorização](#-fase-9-autenticação-e-autorização) EM BREVE
 - [Fase 10: CRUD (Create, Read, Update, Delete)]() EM BREVE
 - [Fase 11: Testes e Depuração]() EM BREVE
 - [Fase 12: Deploy (Implantação) em Produção]() EM BREVE
@@ -1158,7 +1163,7 @@ class LivroAdmin(admin.ModelAdmin):
 ```
 <img src="README-assets/ex67.png" alt="Exemplo67">
 
-``Lista de Apresentação`:`
+`Lista de Apresentação`:
 ```bash
     list_display = ('titulo', 'autor', 'publicação')
     #Aqui ele apresentará esses 3 campos
@@ -1208,26 +1213,33 @@ class LivroAdmin(admin.ModelAdmin):
 **Para ver siga as instruções:**
 
 `Passo 1: Abrir o Servidor`
+
 <img src="README-assets/ex74.png" alt="Exemplo74">
 
 `Passo 2: Entrar no Schema`
+
 <img src="README-assets/ex75.png" alt="Exemplo75">
 
 `Passo 3: Localizar o seu Schema`
+
 <img src="README-assets/ex76.png" alt="Exemplo76">
 
 `Passo 4: Clicar na mini-tabela`
+
 <img src="README-assets/ex77.png" alt="Exemplo77">
 
 `Passo 5: Admirar seu item no banco`
+
 <img src="README-assets/ex78.png" alt="Exemplo78">
 
 `Passo 6: Realizar Runserver e ver seus itens no site`
 
 **lista_livros:**
+
 <img src="README-assets/ex82.png" alt="Exemplo82">
 
 **livro_detalhes:**
+
 <img src="README-assets/ex83.png" alt="Exemplo83">
 
 ### **7.4.** *Autorizações e Usuários*
@@ -1257,7 +1269,23 @@ class LivroAdmin(admin.ModelAdmin):
 - Ao configurar permissões para um grupo, você define o que os usuários desse grupo podem fazer em relação aos modelos (tabelas do banco de dados) da sua aplicação. Isso inclui permissões de visualização, adição, alteração e exclusão.
 - No modelo padrão de autenticação do Django, há grupos predefinidos, como "Admin," "Staff," e "Superuser," cada um com diferentes conjuntos de permissões. Você pode personalizar esses grupos ou criar novos de acordo com suas necessidades.
 
+### **7.5.** *Traduzindo Painel Admin*
+
+>🎛️ # Vamos agora traduzir a página do seu Admin Django, para que seja da sua facilidade de leitura.
+
+##### 1. Para traduzir o painel admin do Django, você deverá ir até o arquivo `settings.py` do seu projeto (`WebBooks/setup/settings.py`)
+
+##### 2. Vá até a seção de LANGUAGE_CODE, lá você substituirá os códigos do TIME_ZONE e LANGUAGE_CODE para:
+
+```bash
+LANGUAGE_CODE = 'pt-br'
+
+TIME_ZONE = 'America/Sao_Paulo'
+```
+
 <img src="README-assets/ex79.png" alt="Exemplo79">
+
+<img src="README-assets/ex85.png" alt="Exemplo85">
 
 > 🔔 # Agora você pode usar o painel de administração para adicionar, editar e excluir registros de seu banco de dados de forma conveniente. Nesta fase, você aprendeu a habilitar e personalizar o painel de administração do Django. Na próxima fase, exploraremos como criar formulários e lidar com validação de dados.
 ---------------------------------------------------------------
@@ -1369,11 +1397,28 @@ def adicionar_livro(request):
     {% include 'partials/footer.html' %}
 {% endblock %}
 ```
+
 > - **method="post" enctype="multipart/form-data":** Aqui, você está criando um elemento de formulário HTML usando a tag `<form>`. O atributo `method` está definido como "post", o que significa que o formulário será enviado como uma solicitação `POST` quando o usuário o enviar. O atributo `enctype` está definido como "multipart/form-data". Isso é necessário quando você tem campos de entrada do tipo "file" (como o campo de upload de imagem), pois permite o envio de arquivos binários. O valor "multipart/form-data" é usado para formulários que contêm campos de upload de arquivo.
 > - **{% csrf_token %}**: Esta é uma tag do Django template que insere um token de segurança `CSRF (Cross-Site Request Forgery)` no formulário. Isso é importante para proteger seu aplicativo contra ataques `CSRF`. Quando o formulário é enviado, o Django verifica se o token é válido.
 > - **{{ livro_form.as_p }}**: Esta é outra tag do Django template. `livro_form` é uma instância do seu formulário `LivroForm`. `as_p` é um método que renderiza o formulário com cada campo `(título, autor, etc.)` em um parágrafo `(<p>)`. Isso cria uma representação simples do formulário, onde cada campo do formulário é exibido em um novo parágrafo.
 > - **type="submit"**: Este é colocado em um botão de envio no formulário. Quando o usuário clica neste botão, o formulário é enviado para o servidor. O atributo type está definido como "submit", o que significa que este botão é usado para enviar o formulário. O texto "Adicionar Livro" é o rótulo do botão exibido para o usuário.
 >> 🎨 OBS: Tem várias outras formas de criar Inputs personalizados, utilizando CSS/HTML, além de outras formas de apresentar o formulário, basta usar a criatividade.
+
+- Vamos mudar algumas coisas no nosso Header, localizado dentro do `templates/partials/header.html`
+
+**header.html:**
+```bash
+{% load static %}
+<header class="bg-gray d-flex justify-content-center py-3">
+    <ul class="nav nav-pills">
+      <li class="nav-item"><a href="../" class="nav-link" aria-current="page">Listar</a></li>
+      <li class="nav-item"><a href="../detalhes" class="nav-link">Detalhes</a></li>
+      <li class="nav-item"><a href="../adicionar" class="nav-link">Adicionar</a></li>
+    </ul>
+</header>
+```
+
+<img src="README-assets/ex85.png" alt="Exemplo85">
 
 ### **8.4.** *Personalizando Formulário Template*
 

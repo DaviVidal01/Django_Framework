@@ -1438,7 +1438,7 @@ def adicionar_livro(request):
     </div>
     <div class="form-group">
         <label for="{{ livro_form.publicacao.id_for_label }}">Data de Publicação:</label>
-        {{ livro_form.publicacao }}
+        {{ livro_form.publicação }}
     </div>
     <div class="form-group">
         <label for="{{ livro_form.paginas.id_for_label }}">Número de Páginas:</label>
@@ -1523,3 +1523,9 @@ urlpatterns = [
 --------------------------------------------------------------
 
 ## 📗 Fase 9: Autenticação e Autorização
+
+### **9.1.** *Criando usuário login padrão (Opção 1)*
+
+### **9.2.** *Criando usuário login personalizado (Opção 2)*
+
+##### 1. No arquivo `models.py`, crie um modelo para o usuário personalizado (opcional, mas permite adicionar campos personalizados ao usuário). Por exemplo:

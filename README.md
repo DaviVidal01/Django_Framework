@@ -1285,7 +1285,7 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 <img src="README-assets/ex79.png" alt="Exemplo79">
 
-<img src="README-assets/ex85.png" alt="Exemplo85">
+<img src="README-assets/ex86.png" alt="Exemplo86">
 
 > 🔔 # Agora você pode usar o painel de administração para adicionar, editar e excluir registros de seu banco de dados de forma conveniente. Nesta fase, você aprendeu a habilitar e personalizar o painel de administração do Django. Na próxima fase, exploraremos como criar formulários e lidar com validação de dados.
 ---------------------------------------------------------------
@@ -1523,3 +1523,61 @@ urlpatterns = [
 --------------------------------------------------------------
 
 ## 📗 Fase 9: Autenticação e Autorização
+
+> 🔔 # Nesta fase, você aprenderá a implementar a autenticação de usuários e definir permissões de autorização para diferentes partes do seu site.
+
+### **9.1.** *Configurar a Autenticação de Usuários*
+
+- Para configurar a autenticação de usuários, você pode aproveitar as funcionalidades incorporadas do Django
+
+##### 1. Certifique-se de que o aplicativo `django.contrib.auth` está incluído em `INSTALLED_APPS` no seu arquivo `settings.py`.
+
+<img src="README-assets/ex87.png" alt="Exemplo87">
+
+##### 2. Importar biblioteca auth_views e crie URLs de autenticação em seu arquivo `urls.py`
+
+```bash
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    # Outras URLs
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+]
+```
+
+<img src="README-assets/ex88.png" alt="Exemplo88">
+
+### **9.2.** *Definir Permissões e Autorizações*
+
+- Neste passo, você pode começar a definir permissões personalizadas e autorizações. Aqui estão alguns passos adicionais para ajudar a personalizar ainda mais sua aplicação:
+
+##### 1. Decorador de Login Obrigatório:
+
+> 🎛️ # Para proteger visualizações específicas que exigem que o usuário esteja logado, você pode usar o decorador `@login_required`. Por exemplo, se você deseja que apenas usuários autenticados acessem uma visualização chamada `adicionar_livro` dentro do seu arquivo `views.py`
+
+```bash
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def adicionar_livro(request):
+    if request.method == 'POST':
+        livro_form = LivroForm(request.POST, request.FILES)
+        if livro_form.is_valid():
+            novo_livro = Livro(
+                titulo= livro_form.cleaned_data['titulo'],
+                autor= livro_form.cleaned_data['autor'],
+                publicação= livro_form.cleaned_data['publicação'],
+                paginas= livro_form.cleaned_data['paginas'],
+                capa = livro_form.cleaned_data['capa']
+            )
+            novo_livro.save() 
+
+            return redirect('lista_livros')
+    else:
+        livro_form = LivroForm()
+
+    return render(request, 'adicionar_livro.html', {'livro_form': livro_form})
+```
+
+<img src="README-assets/ex89.png" alt="Exemplo89">

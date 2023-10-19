@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Livro
 from .forms import LivroForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def lista_livros(request):
@@ -11,6 +12,7 @@ def livro_detalhes(request):
     livros = Livro.objects.all()
     return render(request, 'livro_detalhes.html', {'livros': livros})
 
+@login_required
 def adicionar_livro(request):
     if request.method == 'POST':
         livro_form = LivroForm(request.POST, request.FILES)

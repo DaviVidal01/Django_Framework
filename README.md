@@ -38,6 +38,11 @@
 - - [6.2. Compreendendo a Integração](#62-compreendendo-a-integração)
 - - [6.3. Divisão das responsabilidades MVT](#63-divisão-das-responsabilidades-mvt)
 - [Fase 7: Administração do Django](#-fase-7-administração-do-django)
+- - [7.1. Habilitar o Painel de Administração](#71-habilitar-o-painel-de-administração)
+- - [7.2. Personalizar a Interface de Administração](#72-personalizar-a-interface-de-administração)
+- - [7.3. Adicionar Informações no Banco de Dados](#73-adicionar-informações-no-banco-de-dados)
+- - [7.4. Autorizações e Usuários](#74-autorizações-e-usuários)
+- - [7.5. Traduzindo Painel Admin](#75-traduzindo-painel-admin)
 - [Fase 8: Formulários e Validação](#-fase-8-formulários-e-validação)
 - - [8.1. Criando um Formulário](#81-criando-um-formulário)
 - - [8.2. Renderizando o Formulário em uma View](#82-renderizando-o-formulário-em-uma-view)
@@ -1285,7 +1290,7 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 <img src="README-assets/ex79.png" alt="Exemplo79">
 
-<img src="README-assets/ex85.png" alt="Exemplo85">
+<img src="README-assets/ex86.png" alt="Exemplo86">
 
 > 🔔 # Agora você pode usar o painel de administração para adicionar, editar e excluir registros de seu banco de dados de forma conveniente. Nesta fase, você aprendeu a habilitar e personalizar o painel de administração do Django. Na próxima fase, exploraremos como criar formulários e lidar com validação de dados.
 ---------------------------------------------------------------
@@ -1524,8 +1529,25 @@ urlpatterns = [
 
 ## 📗 Fase 9: Autenticação e Autorização
 
-### **9.1.** *Criando usuário login padrão (Opção 1)*
+### **9.1.** *Configurar a Autenticação de Usuário Padrão Django*
 
-### **9.2.** *Criando usuário login personalizado (Opção 2)*
+- Para configurar a autenticação de usuários, você pode aproveitar as funcionalidades incorporadas do Django, ele próprio já oferece configurações e recursos padrões de banco para Usuários, Authênticação, Groups (Admins), entre outros, nessa etapa iremos usar a configuração padrão de Usuários do Django, como podemos ver no banco Workbench e nas configurações do `settings.py`.
 
-##### 1. No arquivo `models.py`, crie um modelo para o usuário personalizado (opcional, mas permite adicionar campos personalizados ao usuário). Por exemplo:
+<img src="README-assets/ex87.png" alt="Exemplo87">
+
+<img src="README-assets/ex88.png" alt="Exemplo88">
+
+- Coloque dentro do arquivo `urls.py` que está localizado dentro do seu aplicativo `Website/urls.py` os seguintes comandos.
+
+```bash
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    # Outras URLs
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+]
+```
+Exemplo:
+
+<img src="README-assets/ex89.png" alt="Exemplo89">

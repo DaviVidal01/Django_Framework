@@ -1,11 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-class CustomUser(AbstractUser):
-    nome = models.CharField(max_length=155)
     
-
 class Livro(models.Model):
     titulo = models.CharField(max_length=200)
     autor = models.CharField(max_length=100)

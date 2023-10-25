@@ -1537,17 +1537,103 @@ urlpatterns = [
 
 <img src="README-assets/ex88.png" alt="Exemplo88">
 
-- Coloque dentro do arquivo `urls.py` que está localizado dentro do seu aplicativo `Website/urls.py` os seguintes comandos.
+##### 1. Configuração de URLs para Login e Logout
+
+> 🔔 # Coloque dentro do arquivo `urls.py` que está localizado dentro do seu aplicativo `Website/urls.py` os seguintes comandos, colocamos as views `login_view` e `logout_view`, mas ainda não criamos eles, vamos criar na próxima etapa.
 
 ```bash
-from django.contrib.auth import views as auth_views
-
 urlpatterns = [
     # Outras URLs
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]
 ```
 Exemplo:
 
 <img src="README-assets/ex89.png" alt="Exemplo89">
+
+> 🔔 # Agora, em seu arquivo `navbar.html`, você pode adicionar os botões de "`Login`" e "`Logout`". Você pode usar Bootstrap para estilizá-los da maneira desejada. Aqui está um exemplo:
+
+```bash
+{% load static %}
+<header class="bg-gray d-flex justify-content-center py-3">
+    <ul class="nav nav-pills">
+      <li class="nav-item"><a href="../" class="nav-link" aria-current="page">Listar</a></li>
+      <li class="nav-item"><a href="../detalhes" class="nav-link">Detalhes</a></li>
+      <li class="nav-item"><a href="../adicionar" class="nav-link">Adicionar</a></li>
+    </ul>
+    {% if user.is_authenticated %}
+      <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+    {% else %}
+      <a href="#loginModal" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-primary">
+    {% endif %}
+</header>
+```
+Exemplo:
+
+<img src="README-assets/ex90.png" alt="Exemplo90">
+
+> - **{% if user.is_authenticated %}:** Isso é uma declaração condicional em Django Template Language (DTL). Aqui, estamos verificando se o usuário atual está autenticado, ou seja, se já fez login. Se o usuário estiver autenticado, o bloco de código dentro deste `if` será executado.
+> - **<a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>:** Dentro do bloco `if`, estamos criando um link `(<a>)` que levará o usuário para a URL de logout. A URL é definida com `{% url 'logout' %}`, que se refere à visualização de `logout` do Django. Além disso, a classe "`btn btn-primary`" é aplicada para estilizar o link como um botão.
+> - **{% else %}:** Esta parte é executada se o usuário não estiver autenticado (ou seja, o inverso da condição no `if`).
+> - **<a href="#loginModal" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-primary">Login</a>:** Se o usuário não estiver autenticado, esta linha de código cria um link `<a>` com o texto "`Login`". O atributo `href` é definido como "`#loginModal`", o que indica que esse link abrirá um modal com o ID "`loginModal`" quando clicado. Os atributos `data-bs-toggle="modal"` e `data-bs-target="#loginModal"` são parte do Bootstrap e são usados para ativar o modal quando o link é clicado. O `class="btn btn-primary"` estiliza o link como um botão primário.
+
+##### 2. Criação de Formulário e Views de login e Logout
+
+> 🔔 # Vamos criar um formulário de login no Django. Primeiro, você precisa criar um novo formulário no seu `forms.py`:
+
+```bash
+class LoginForm(forms.Form):
+    username_email = forms.CharField(label="Nome / Email")
+    password = forms.CharField(label="Senha", widget=forms.PasswordInput)
+```
+Exemplo:
+
+<img src="README-assets/ex92.png" alt="Exemplo92">
+
+> 🔔 # Vamos criar agora as views de Logout e Login, no nosso caso vamos fazer com que o login, além de reconhecer o nome de usuário (username) ele também poderá logar a partir de email, então teremos alguns comandos adicionais no nosso código da view `login_view`:
+
+**login_view:**
+```bash
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+
+def login_view(request):
+    if request.method == 'POST':
+        username_or_email = request.POST['username_email']
+        password = request.POST['password']
+
+        # Verifica se o username_or_email parece ser um email
+        if '@' in username_or_email:
+            user = authenticate(request, email=username_or_email, password=password)
+        else:
+            user = authenticate(request, username=username_or_email, password=password)
+
+        if user is not None:
+            login(request, user)
+            # Redirecione para a url desejada após o login bem-sucedido
+            return redirect('detalhes')
+        else:
+            # Usuário ou senha incorretos, você pode adicionar uma mensagem de erro aqui
+            return render(request, 'lista_livros.html', {'error_message': 'Credenciais inválidas'})
+
+    return render(request, 'lista_detalhes.html')
+```
+Exemplo:
+
+<img src="README-assets/ex93.png" alt="Exemplo93">
+
+**logout_view:**
+```bash
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    # Redirecione para a página desejada após o logout.
+    return redirect('detalhes')
+```
+Exemplo:
+
+<img src="README-assets/ex94.png" alt="Exemplo94">
+
+##### 3. Criando modal em partials para o botão Login.

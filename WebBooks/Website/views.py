@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
 from .models import Livro
 from .forms import LivroForm, LoginForm
+from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
 # Create your views here.
 
 def lista_livros(request):
@@ -36,30 +37,29 @@ def adicionar_livro(request):
     return render(request, 'adicionar_livro.html', {'livro_form': livro_form, 'login_form': login_form})
 
 def login_view(request):
+    login_form = LoginForm()
+
     if request.method == 'POST':
-        login_form = LoginForm(request, request.POST)
-        if login_form.is_valid():
-            username_email = login_form.cleaned_data['username_email']
-            password = login_form.cleaned_data['password']
-            # Verifica se o username_email parece ser um email
-            if '@' in username_email :
-                user = authenticate(request, email=username_email , password=password)
-            else:
-                user = authenticate(request, username=username_email , password=password)
+        login_form = LoginForm(request.POST)
 
-            if user is not None:
-                login(request, user)
-                # Redirecione para a url desejada após o login bem-sucedido
-                messages.success(request, 'Login bem-sucedido!')
-                return redirect('detalhes')
-            else:
-                # Usuário ou senha incorretos, você pode adicionar uma mensagem de erro aqui
-                messages.error(request, 'Credenciais incorretas. Tente novamente.')
-                return render(request, 'livro_detalhes.html')
+    if login_form.is_valid():
+        username_or_email = login_form['username_email'].value()
+        password = login_form['password'].value()
+        # Verifica se o username_or_email parece ser um email
+        if '@' in username_or_email:
+            usuario = auth.authenticate(request, email=username_or_email, password=password)
         else:
-            messages.error(request, 'Credenciais incorretas. Tente novamente.')
+            usuario = auth.authenticate(request, username=username_or_email, password=password)
 
-    return render(request, 'livro_detalhes.html')
+        if usuario is not None:
+            auth.login(request, usuario)
+            messages.success(request, 'Foi logado com sucesso!')                # Redirecione para a url desejada após o login bem-sucedido
+            return redirect('lista_livros')
+        else:
+            # Usuário ou senha incorretos, você pode    adicionar uma mensagem de erro aqui                messages.error(request, 'Erro ao efetuar login')
+            return render(request, 'livro_detalhes.html')
+
+    return render(request, 'livro_detalhes.html', {'login_form' : login_form})
 
 def logout_view(request):
     logout(request)

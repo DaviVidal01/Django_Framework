@@ -7,7 +7,7 @@
       <li class="nav-item"><a href="../adicionar" class="nav-link">Adicionar</a></li>
     </ul>
     {% if user.is_authenticated %}
-      <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+      <a href="{% url 'logout_user' %}" class="btn btn-primary">Logout</a>
     {% else %}
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">Login</button>
     {% endif %}

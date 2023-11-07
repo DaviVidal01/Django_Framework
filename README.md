@@ -1544,8 +1544,8 @@ urlpatterns = [
 ```bash
 urlpatterns = [
     # Outras URLs
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    path('login_user/', views.login_view, name='login_user'),
+    path('logout_user/', views.logout_view, name='logout_user'),
 ]
 ```
 Exemplo:
@@ -1563,7 +1563,7 @@ Exemplo:
       <li class="nav-item"><a href="../adicionar" class="nav-link">Adicionar</a></li>
     </ul>
     {% if user.is_authenticated %}
-      <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+      <a href="{% url 'logout_user' %}" class="btn btn-primary">Logout</a>
     {% else %}
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">Login</button>
     {% endif %}
@@ -1574,7 +1574,7 @@ Exemplo:
 <img src="README-assets/ex90.png" alt="Exemplo90">
 
 > - **{% if user.is_authenticated %}:** Isso é uma declaração condicional em Django Template Language (DTL). Aqui, estamos verificando se o usuário atual está autenticado, ou seja, se já fez login. Se o usuário estiver autenticado, o bloco de código dentro deste `if` será executado.
-> - **<a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>:** Dentro do bloco `if`, estamos criando um link `(<a>)` que levará o usuário para a URL de logout. A URL é definida com `{% url 'logout' %}`, que se refere à visualização de `logout` do Django. Além disso, a classe "`btn btn-primary`" é aplicada para estilizar o link como um botão.
+> - **<a href="{% url 'logout_user' %}" class="btn btn-primary">Logout</a>:** Dentro do bloco `if`, estamos criando um link `(<a>)` que levará o usuário para a URL de logout_user. A URL é definida com `{% url 'logout_user' %}`, que se refere à visualização de `logout_user` do Django. Além disso, a classe "`btn btn-primary`" é aplicada para estilizar o link como um botão.
 > - **{% else %}:** Esta parte é executada se o usuário não estiver autenticado (ou seja, o inverso da condição no `if`).
 > - **<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">Login</button>:** Se o usuário não estiver autenticado, esta linha de código cria um botão `<button>` com o texto "`Login`". Os atributos `data-bs-toggle="modal"` e `data-bs-target="#modalLogin"` são parte do Bootstrap e são usados para ativar o modal quando o botão é clicado. O `class="btn btn-primary"` estiliza o link como um botão primário.
 
@@ -1595,29 +1595,37 @@ Exemplo:
 
 **login_view:**
 ```bash
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
 def login_view(request):
+    user_form = LoginForm()
+
     if request.method == 'POST':
-        username_or_email = request.POST['username_email']
-        password = request.POST['password']
+        user_form = LoginForm(request.POST)
 
-        # Verifica se o username_or_email parece ser um email
-        if '@' in username_or_email:
-            user = authenticate(request, email=username_or_email, password=password)
-        else:
-            user = authenticate(request, username=username_or_email, password=password)
+        if user_form.is_valid():
 
-        if user is not None:
-            login(request, user)
-            # Redirecione para a url desejada após o login bem-sucedido
-            return redirect('detalhes')
-        else:
-            # Usuário ou senha incorretos, você pode adicionar uma mensagem de erro aqui
-            return render(request, 'lista_livros.html', {'error_message': 'Credenciais inválidas'})
+            username_or_email = user_form['username_email'].value()
+            password = user_form['password'].value()
+            # Verifica se o username_or_email parece ser um email
+            if '@' in username_or_email:
+                usuario = auth.authenticate(request,    email=username_or_email, password=password)
+            else:
+                usuario = auth.authenticate(request,    username=username_or_email, password=password)
 
-    return render(request, 'livro_detalhes.html')
+            if usuario is not None:
+                auth.login(request, usuario)
+                messages.success(request, 'Foi logado com sucesso!')
+                # Redirecione para a url desejada após o login bem-sucedido
+                return redirect('detalhes')
+            else:
+                # Usuário ou senha incorretos, você pode    adicionar uma mensagem de erro aqui
+                messages.error(request, 'Erro ao efetuar login')
+                return render(request, 'livro_detalhes.html')
+
+        return render(request, 'livro_detalhes.html', {'user_form' : user_form})
 ```
 Exemplo:
 
@@ -1625,10 +1633,10 @@ Exemplo:
 
 **logout_view:**
 ```bash
-from django.contrib.auth import logout
 
 def logout_view(request):
-    logout(request)
+    auth.logout(request)
+    messages.success(request, 'Logout efetuado com sucesso!')
     # Redirecione para a página desejada após o logout.
     return redirect('detalhes')
 ```

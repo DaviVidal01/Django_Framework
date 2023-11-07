@@ -8,19 +8,18 @@
         </div>
         <div class="modal-body">
           <!-- Formulário de Login -->
-          <form method="post">
+          <form method="POST" action="{% url 'login_user' %}">
             {% csrf_token %}
-            {{ login_form.username.label_tag }}
-            {{ login_form.username }}
+            {{ login_form.username_email.label_tag }}
+            {{ login_form.username_email }}
             {{ login_form.password.label_tag }}
             {{ login_form.password }}
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Entrar</button>
-              </div>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Entrar</button>
+            </div>
           </form>
         </div>
-        
       </div>
     </div>
 </div>

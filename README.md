@@ -1443,7 +1443,7 @@ def adicionar_livro(request):
     </div>
     <div class="form-group">
         <label for="{{ livro_form.publicacao.id_for_label }}">Data de Publicação:</label>
-        {{ livro_form.publicação }}
+        {{ livro_form.publicacao }}
     </div>
     <div class="form-group">
         <label for="{{ livro_form.paginas.id_for_label }}">Número de Páginas:</label>

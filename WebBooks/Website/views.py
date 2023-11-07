@@ -15,6 +15,7 @@ def livro_detalhes(request):
     livros = Livro.objects.all()
     return render(request, 'livro_detalhes.html', {'livros': livros, 'login_form': login_form})
 
+@login_required
 def adicionar_livro(request):
     login_form = LoginForm()
     if request.method == 'POST':

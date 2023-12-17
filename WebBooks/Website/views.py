@@ -1,7 +1,12 @@
+# --- Render
+from django.shortcuts import render, redirect
+# --- Forms / BD
 from .models import Livro
 from .forms import LivroForm, LoginForm
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
+# --- Authenticate
+from django.contrib.auth import login, logout
+from django.contrib import auth
+from django.contrib.auth.models import User
 from django.contrib import messages
 # Create your views here.
 
@@ -15,7 +20,6 @@ def livro_detalhes(request):
     livros = Livro.objects.all()
     return render(request, 'livro_detalhes.html', {'livros': livros, 'login_form': login_form})
 
-@login_required
 def adicionar_livro(request):
     login_form = LoginForm()
     if request.method == 'POST':
@@ -40,29 +44,29 @@ def adicionar_livro(request):
 def login_view(request):
     login_form = LoginForm()
 
+    # Verifica se o formulário possui método POST
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
 
+    #Verifica se os dados inseridos no formulário são válidos
     if login_form.is_valid():
-        username_or_email = login_form['username_email'].value()
+        #Pega os dados do formulário de seus específicos names    
+        username = login_form['username'].value()
         password = login_form['password'].value()
-        # Verifica se o username_or_email parece ser um email
-        if '@' in username_or_email:
-            usuario = auth.authenticate(request, email=username_or_email, password=password)
-        else:
-            usuario = auth.authenticate(request, username=username_or_email, password=password)
+        #Faz a authenticação do usuário para verificar seus dados
+        usuario = auth.authenticate(request, username=username, password=password)
 
+        #Se os dados são coesos, o login é realizado com a authenticação
         if usuario is not None:
             auth.login(request, usuario)
-            messages.success(request, 'Foi logado com sucesso!')                # Redirecione para a url desejada após o login bem-sucedido
+            messages.success(request, 'Foi logado com sucesso!')
             return redirect('lista_livros')
         else:
-            # Usuário ou senha incorretos, você pode    adicionar uma mensagem de erro aqui                messages.error(request, 'Erro ao efetuar login')
-            return render(request, 'livro_detalhes.html')
+             messages.error(request, 'Erro ao efetuar login')
 
     return render(request, 'livro_detalhes.html', {'login_form' : login_form})
 
 def logout_view(request):
     logout(request)
-    # Redirecione para a página desejada após o logout.
-    return redirect('detalhes')
+    #Redireciona para a página desejada após o logout
+    return redirect('livro_detalhes')

@@ -4,6 +4,8 @@
 <title>{% block title %}Adicionar Livro{% endblock %}</title>
     <!--Header-->
     {% include 'partials/header.html' %}
+    <!--Mensagens-->
+    {% include 'partials/alerts.html' %}
     <main>
         <h1>Adicionar Livro</h1>
         <form method="post" enctype="multipart/form-data" action="{% url 'adicionar_livro' %}">

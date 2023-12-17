@@ -1,3 +1,4 @@
+{% load static %}
 <!-- Modal de Login -->
 <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -10,10 +11,14 @@
           <!-- Formulário de Login -->
           <form method="POST" action="{% url 'login_user' %}">
             {% csrf_token %}
-            {{ login_form.username_email.label_tag }}
-            {{ login_form.username_email }}
-            {{ login_form.password.label_tag }}
-            {{ login_form.password }}
+            <div class="form-group">
+              {{ login_form.username.label }}
+              {{ login_form.username }}
+            </div>
+            <div class="form-group">
+              {{ login_form.password.label }}
+              {{ login_form.password }}
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               <button type="submit" class="btn btn-primary">Entrar</button>

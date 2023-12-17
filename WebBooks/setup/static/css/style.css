@@ -22,7 +22,8 @@ label {
 input[type="text"],
 input[type="date"],
 input[type="number"],
-input[type="file"] {
+input[type="file"], 
+input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;

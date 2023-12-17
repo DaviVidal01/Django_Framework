@@ -1531,11 +1531,9 @@ urlpatterns = [
 
 ### **9.1.** *Configurar a Autenticação de Usuário Padrão Django*
 
-- Para configurar a autenticação de usuários, você pode aproveitar as funcionalidades incorporadas do Django, ele próprio já oferece configurações e recursos padrões de banco para Usuários, Authênticação, Groups (Admins), entre outros, nessa etapa iremos usar a configuração padrão de Usuários do Django, como podemos ver no banco Workbench e nas configurações do `settings.py`.
+- Para configurar a autenticação de usuários, você pode aproveitar as funcionalidades incorporadas do Django, ele próprio já oferece configurações e recursos padrões de banco para Usuários, Authenticação, Groups (Admins), entre outros, nessa etapa iremos usar a configuração padrão de Usuários do Django, como podemos ver no banco Workbench e nas configurações do `settings.py`.
 
 <img src="README-assets/ex87.png" alt="Exemplo87">
-
-<img src="README-assets/ex88.png" alt="Exemplo88">
 
 ##### 1. Configuração de URLs para Login e Logout
 
@@ -1572,11 +1570,12 @@ Exemplo:
 Exemplo:
 
 <img src="README-assets/ex90.png" alt="Exemplo90">
+<img src="README-assets/ex91.png" alt="Exemplo91">
 
 > - **{% if user.is_authenticated %}:** Isso é uma declaração condicional em Django Template Language (DTL). Aqui, estamos verificando se o usuário atual está autenticado, ou seja, se já fez login. Se o usuário estiver autenticado, o bloco de código dentro deste `if` será executado.
-> - **<a href="{% url 'logout_user' %}" class="btn btn-primary">Logout</a>:** Dentro do bloco `if`, estamos criando um link `(<a>)` que levará o usuário para a URL de logout_user. A URL é definida com `{% url 'logout_user' %}`, que se refere à visualização de `logout_user` do Django. Além disso, a classe "`btn btn-primary`" é aplicada para estilizar o link como um botão.
+> - **`<a href="{% url 'logout_user' %}" class="btn btn-primary">Logout</a>:`** Dentro do bloco `if`, estamos criando um link `(<a>)` que levará o usuário para a URL de logout_user. A URL é definida com `{% url 'logout_user' %}`, que se refere à visualização de `logout_user` do Django. Além disso, a classe "`btn btn-primary`" é aplicada para estilizar o link como um botão.
 > - **{% else %}:** Esta parte é executada se o usuário não estiver autenticado (ou seja, o inverso da condição no `if`).
-> - **<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">Login</button>:** Se o usuário não estiver autenticado, esta linha de código cria um botão `<button>` com o texto "`Login`". Os atributos `data-bs-toggle="modal"` e `data-bs-target="#modalLogin"` são parte do Bootstrap e são usados para ativar o modal quando o botão é clicado. O `class="btn btn-primary"` estiliza o link como um botão primário.
+> - `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">Login</button>:` Se o usuário não estiver autenticado, esta linha de código cria um botão `<button>` com o texto "`Login`". Os atributos `data-bs-toggle="modal"` e `data-bs-target="#modalLogin"` são parte do Bootstrap e são usados para ativar o modal quando o botão é clicado. O `class="btn btn-primary"` estiliza o link como um botão primário.
 
 ##### 2. Criação de Formulário e Views de login e Logout
 
@@ -1584,8 +1583,8 @@ Exemplo:
 
 ```bash
 class LoginForm(forms.Form):
-    username_email = forms.CharField(label="Nome / Email")
-    password = forms.CharField(label="Senha", widget=forms.PasswordInput)
+    username = forms.CharField(label="Username", required=True, max_length=100)
+    password = forms.CharField(label="Senha", required=True, max_length=100, widget=forms.PasswordInput(attrs={'type':'password'}))
 ```
 Exemplo:
 
@@ -1595,37 +1594,35 @@ Exemplo:
 
 **login_view:**
 ```bash
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, logout
+from django.contrib import auth
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
 def login_view(request):
-    user_form = LoginForm()
+    login_form = LoginForm()
 
+    # Verifica se o formulário possui método POST
     if request.method == 'POST':
-        user_form = LoginForm(request.POST)
+        login_form = LoginForm(request.POST)
 
-        if user_form.is_valid():
+    #Verifica se os dados inseridos no formulário são válidos
+    if login_form.is_valid():
+        #Pega os dados do formulário de seus específicos names    
+        username = login_form['username'].value()
+        password = login_form['password'].value()
+        #Faz a authenticação do usuário para verificar seus dados
+        usuario = auth.authenticate(request, username=username, password=password)
 
-            username_or_email = user_form['username_email'].value()
-            password = user_form['password'].value()
-            # Verifica se o username_or_email parece ser um email
-            if '@' in username_or_email:
-                usuario = auth.authenticate(request,    email=username_or_email, password=password)
-            else:
-                usuario = auth.authenticate(request,    username=username_or_email, password=password)
+        #Se os dados são coesos, o login é realizado com a authenticação
+        if usuario is not None:
+            auth.login(request, usuario)
+            messages.success(request, 'Foi logado com sucesso!')
+            return redirect('lista_livros')
+        else:
+             messages.error(request, 'Erro ao efetuar login')
 
-            if usuario is not None:
-                auth.login(request, usuario)
-                messages.success(request, 'Foi logado com sucesso!')
-                # Redirecione para a url desejada após o login bem-sucedido
-                return redirect('detalhes')
-            else:
-                # Usuário ou senha incorretos, você pode    adicionar uma mensagem de erro aqui
-                messages.error(request, 'Erro ao efetuar login')
-                return render(request, 'livro_detalhes.html')
-
-        return render(request, 'livro_detalhes.html', {'user_form' : user_form})
+    return render(request, 'livro_detalhes.html', {'login_form' : login_form})
 ```
 Exemplo:
 
@@ -1648,7 +1645,7 @@ Exemplo:
 
 > 🔔 # Para criar um modal de login com os requisitos mencionados, você pode usar o Bootstrap para estilizar o modal e o próprio Django para criar o formulário de login. Aqui estão as etapas para criar esse modal:
 
-- Certifique-se de que você tenha a biblioteca Bootstrap incluída em seu projeto. Você pode obtê-lo via CDN ou instalá-lo localmente aqui [Bootstrap](https://github.com/twbs/bootstrap/releases/download/v5.3.2/bootstrap-5.3.2-dist.zip).
+- Certifique-se de que você tenha a biblioteca Bootstrap incluída em seu projeto. Você pode obtê-lo via CDN ou instalá-lo localmente aqui [Bootstrap v5.3.2](https://github.com/twbs/bootstrap/releases/download/v5.3.2/bootstrap-5.3.2-dist.zip).
 
 - Exemplo Bootstrap vai CDN: 
 
@@ -1673,6 +1670,7 @@ Exemplo:
 - Insere esses códigos dentro do arquivo HTML:
 
 ```bash
+{% load static %}
 <!-- Modal de Login -->
 <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -1709,40 +1707,22 @@ Exemplo:
 
 ##### 5. Notificação de Login (Sucesso e Erro)
 
-- Vá até o arquivo de `settings.py` e escreva esse código:
+- Vá até o diretório **templates/partials** e crie o arquivo chamado **alerts.html** com esses códigos aqui:
 
 ```bash
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+{% if messages %} 
+    {% for message in messages %}
+        <div class = "alert alert-{{ message.tags }}">
+            {{message}}
+        </div>
+        <br>
+    {% endfor %}
+{% endif %}
 ```
+
+- Agora insira seu include em cada página de html, abaixo do navbar:
 
 <img src="README-assets/ex100.png" alt="Exemplo100">
-
-- Agora vá até o arquivo de `views.py` no seu app e atualize o código do `login_view` para:
-
-```bash
-def login_view(request):
-    if request.method == 'POST':
-        username_or_email = request.POST['username_email']
-        password = request.POST['password']
-
-        # Verifica se o username_or_email parece ser um email
-        if '@' in username_or_email:
-            user = authenticate(request, email=username_or_email, password=password)
-        else:
-            user = authenticate(request, username=username_or_email, password=password)
-            
-        if user is not None:
-            login(request, user)
-            # Redirecione para a url desejada após o login bem-sucedido
-            messages.success(request, 'Login bem-sucedido!')
-            return redirect('detalhes')
-        else:
-            # Usuário ou senha incorretos, você pode adicionar uma mensagem de erro aqui
-            messages.error(request, 'Credenciais incorretas. Tente novamente.')
-            return render(request, 'lista_livros.html')
-
-    return render(request, 'livro_detalhes.html')
-```
 
 ##### 6. Interligando LoginForm nas views e páginas.
 
@@ -1750,6 +1730,4 @@ def login_view(request):
 
 - Insere esse codigo atualizado na sua view de páginas.
 
-```bash
-
-```
+<img src="README-assets/ex101.png" alt="Exemplo101">

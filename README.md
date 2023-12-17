@@ -1897,3 +1897,100 @@ def editar_livro(request, id):
 --------------------------------------------------------------
 
 ## 📗 Fase 11: Testes e Depuração
+
+> 🔔 # A fase de testes e depuração é crucial para garantir que seu aplicativo funcione corretamente e para detectar e corrigir quaisquer erros. Vamos começar com alguns conceitos básicos.
+
+##### 1. Configurando o ambiente de teste
+
+- Verifique se dentro do seu diretório de aplicativo (**Website**) possui um arquivo chamado **tests.py**, se não tiver, crie.
+
+<img src="README-assets/ex107.PNG" alt="Exemplo107">
+
+- Dentro deste arquivo é onde você irá escrever seus testes. Importe os módulos necessários no topo do arquivo.
+
+```bash
+from django.test import TestCase, Client
+from .models import Livro
+from django.urls import reverse
+```
+
+##### 2. Escrevendo testes de modelo
+
+- Crie uma class de teste no seu arquivo **tests.py**
+
+```bash
+class LivroTest(TestCase):
+    def setUp(self):
+        # Configurações iniciais para os testes
+        Livro.objects.create(titulo="Meu Livro", autor="Autor Teste", publicação="2023-04-10", paginas=200)
+
+    def test_titulo_do_livro(self):
+        livro = Livro.objects.get(id=1)
+        self.assertEqual(livro.titulo, "Meu Livro")
+```
+> - **class LivroTest(TestCase)**: Aqui, você está criando uma classe de teste chamada `LivroTest` que herda de `django.test.TestCase`. A classe `TestCase` fornece métodos e funcionalidades específicos para testes em Django.
+> - **def setUp(self)**: Este é um método especial que é executado antes de cada teste. Nele, você configura as condições iniciais necessárias para seus testes. No seu caso, você está criando um objeto Livro no banco de dados com alguns dados fictícios.
+> - **Livro.objects.create(titulo="Meu Livro", autor="Autor Teste", publicação="2023-04-10", paginas=200)**: Isso cria um objeto Livro no banco de dados com os valores fornecidos.
+> - **def test_titulo_do_livro(self)**: Este é um método de teste específico. Métodos de teste devem começar com a palavra `test_`. Aqui, você está testando se o título do livro criado é igual a `"Meu Livro"`.
+> - **livro = Livro.objects.get(id=1)**: Isso recupera o objeto `Livro` do banco de dados com o ID igual a 1.
+> - **self.assertEqual(livro.titulo, "Meu Livro")**: `self.assertEqual` é um método de `assert` fornecido pelo Django `TestCase`. Ele verifica se o valor de `livro.titulo` é igual a `"Meu Livro"`. Se não for, o teste falhará.
+> - **self**: Em Python, `self` é uma convenção para se referir à instância atual da classe. Neste contexto, `self` é usado para acessar métodos e atributos da instância da classe de teste, bem como para chamar os métodos de `assert`, como `self.assertEqual`.
+
+- No terminal do diretório de seu projeto (**WebBooks**) vamos escrever o seguinte comando para realizar os testes de seu app
+
+```bash
+python manage.py test Website
+```
+
+<img src="README-assets/ex108.PNG" alt="Exemplo108">
+
+> - O teste deu como resultado "OK" pois está funcionando, podemos ver o tempo para a realização do teste e também a quantidade de tests que foram encontrados para serem realizados.
+>> - 🎨 # OBS: Durante os testes, o Django cria um banco de dados separado para os testes e popula com os dados necessários para executar os testes e quando ele finaliza o teste, ele destrói tal banco (`default`) separado. Isso garante que seus testes não afetem seus dados de produção.
+
+##### 3. Escrevendo testes de views
+
+- Crie uma classe de teste de view
+
+```bash
+class LivroViewsTest(TestCase):
+    def setUp(self):
+        # Configurações iniciais para os testes
+        self.client = Client()
+        self.livro = Livro.objects.create(
+            titulo="Livro de Teste",
+            autor="Autor Teste",
+            publicação="2023-04-10",
+            paginas=200
+        )
+
+    def test_lista_livros_view(self):
+        # Testa se a view retorna um código de resposta 200 (OK)
+        response = self.client.get(reverse('lista_livros'))
+        self.assertEqual(response.status_code, 200)
+
+        # Testa se o template correto é usado
+        self.assertTemplateUsed(response, 'lista_livros.html')
+
+        # Testa se o livro criado está presente na página
+        self.assertContains(response, self.livro.titulo)
+
+        # Adicione mais testes conforme necessário
+```
+
+> - **self.client**: Um cliente Django que pode ser usado para realizar solicitações HTTP simuladas durante os testes.
+> - **self.client.get(reverse('lista_livros'))**: Aqui, você está fazendo uma solicitação `GET` para a `URL` associada à view `lista_livros`.
+> - **self.assertEqual(response.status_code, 200)**: Verifica se a resposta tem um código de status `200`, indicando que a solicitação foi bem-sucedida.
+> - **self.assertTemplateUsed(response, 'lista_livros.html')**: Verifica se o template `'lista_livros.html'` é usado para renderizar a resposta.
+> - **self.assertContains(response, self.livro.titulo)**: Verifica se o `título` do `livro` criado está presente na página.
+
+- Execute o teste novamente no terminal
+
+```bash
+python manage.py test Website
+```
+
+<img src="README-assets/ex109.PNG" alt="Exemplo109">
+
+> Tudo Ok 
+
+##### 3. Escrevendo testes de views

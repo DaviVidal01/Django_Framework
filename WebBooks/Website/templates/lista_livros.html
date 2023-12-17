@@ -19,6 +19,8 @@
                         <p>Capa não encontrada</p>
                     {% endif %}
                 </li>
+                <a href="{% url 'delete' livro.id %}"><button>Deletar</button></a>
+                <a href="{% url 'editar_livro' livro.id %}"><button>Editar</button></a>
                 {% endfor %}
             </ul>
         </main>

@@ -41,6 +41,11 @@ def adicionar_livro(request):
 
     return render(request, 'adicionar_livro.html', {'livro_form': livro_form, 'login_form': login_form})
 
+def editar_livro(request, id):
+    livro = Livro.objects.get(pk=id)
+    livro_form = LivroForm(instance=livro)
+    return render(request, "editar_livros.html", {'livros': livro, 'livro_form': livro_form})
+
 def login_view(request):
     login_form = LoginForm()
 
@@ -70,3 +75,24 @@ def logout_view(request):
     logout(request)
     #Redireciona para a página desejada após o logout
     return redirect('livro_detalhes')
+
+def delete(request,id):
+    livros = Livro.objects.get(pk=id)
+    livros.delete()
+    messages.error(request, 'Livro deletado com sucesso!')
+    return redirect('lista_livros')
+
+def update(request, id):
+    livro = Livro.objects.get(pk=id)
+    
+    if request.method == 'POST':
+        livro_form = LivroForm(request.POST, request.FILES, instance=livro)
+
+        if livro_form.is_valid():
+            livro_form.save()
+            messages.success(request, 'Livro editado com sucesso!')
+            return redirect('lista_livros')
+    else:
+        livro_form = LivroForm(instance=livro)
+
+    return render(request, 'editar_livros.html', {'livros': livro, 'livro_form': livro_form})

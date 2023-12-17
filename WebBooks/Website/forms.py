@@ -1,11 +1,10 @@
 from django import forms
+from .models import Livro
 
-class LivroForm(forms.Form):
-    titulo = forms.CharField(label='Título', max_length=100)
-    autor = forms.CharField(label='Autor', max_length=100)
-    publicação = forms.DateField(label='Data de Publicação')
-    paginas = forms.IntegerField(label='Número de Páginas')
-    capa = forms.ImageField(label='Capa do Livro')
+class LivroForm(forms.ModelForm):
+    class Meta:
+        model = Livro
+        fields = '__all__'
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username", required=True, max_length=100)

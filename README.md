@@ -1314,14 +1314,19 @@ TIME_ZONE = 'America/Sao_Paulo'
 ```bash
 from django import forms
 
-class LivroForm(forms.Form):
-    titulo = forms.CharField(label='Título', max_length=100)
-    autor = forms.CharField(label='Autor', max_length=100)
-    publicação = forms.DateField(label='Data de Publicação')
-    paginas = forms.IntegerField(label='Número de Páginas')
-    capa = forms.ImageField(label='Capa do Livro')
-```
+class LivroForm(forms.ModelForm):
+    class Meta:
+        model = Livro
+        fields = '__all__'
 
+```
+- Forms que estamos utilizando:
+> - **forms.ModelForm:** Ele importa recursos de `forms`, recursos esses guardados em `ModelForm` e adiciona dentro da `class`.
+> - **class Meta:** Dentro da classe `LivroForm`, há uma classe aninhada chamada `Meta`. Essa classe `Meta` é usada para fornecer metadados ao formulário.
+> - **model = Livro:** O atributo model dentro da classe `Meta` especifica qual modelo do Django este formulário está associado. Neste caso, é associado ao modelo `Livro`.
+> - **`fields = '__all__':`** O atributo fields determina quais campos do modelo Livro serão incluídos no formulário. `__all__` significa que todos os campos do modelo serão incluídos no formulário.
+
+- Aqui tem outros exemplos de forms:
 > - **forms.Form:** Ele importa recursos de `forms`, recursos esses guardados em `Form` e adiciona dentro da `class`.
 > - **forms.CharField:** Pega de `forms` a ferramenta chamada `CharField` que registra Caracteres.
 > - **forms.DateField:** Pega de `forms` a ferramenta chamada `DateField` que registra Datas.
@@ -1525,6 +1530,9 @@ urlpatterns = [
 ```
 
 >> 🎨 # OBS: Foi colocado um comentário chamado FORM livro, para poder separar qual é a função daquela URL, isso deixa mais organizado
+>> 🎨 # OBS 2: Lembrando que ao inserir data, você deve inseri-la usando tracinhos como `2023-10-17` pois está na formatação EUA, por exemplo:
+
+<img src="README-assets/ex106.png" alt="Exemplo106">
 
 --------------------------------------------------------------
 
@@ -1750,8 +1758,142 @@ Exemplo:
 delete:
 ```bash
 def delete(request,id):
-    livros = Produtos_BD.objects.get(pk=id)
-    fotos.delete()
-    messages.error(request, 'Produto deletado com sucesso!')
-    return redirect('listarFotos')
+    livros = Livro.objects.get(pk=id)
+    livros.delete()
+    messages.error(request, 'Livro deletado com sucesso!')
+    return redirect('lista_livros')
 ```
+
+update:
+```bash
+def update(request, id):
+    livro = Livro.objects.get(pk=id)
+    
+    if request.method == 'POST':
+        livro_form = LivroForm(request.POST, request.FILES, instance=livro)
+
+        if livro_form.is_valid():
+            livro_form.save()
+            messages.success(request, 'Livro editado com sucesso!')
+            return redirect('lista_livros')
+    else:
+        livro_form = LivroForm(instance=livro)
+
+    return render(request, 'editar_livros.html', {'livros': livro, 'livro_form': livro_form})
+```
+
+- Agora vá até seu arquivo de **Website/urls.py** para criar as seguintes urls.
+
+<img src="README-assets/ex103.PNG" alt="Exemplo103">
+
+> - **def update(request, id): livros = Livros.objects.get(pk=id):** Nesse **(request, id)** ele seleciona o livro pelo id que estiver em seu item, seja através do **card / botão / forms**, já o **get(pk=id)** `(pk é uma abreviação para chave primária / "Primary Key")` procura pelo mesmo item que tiver o ID idêntico através do banco de dados do **Livros** para poder utiliza-lo.
+> - **instance=livros:** Este parâmetro está vinculando o formulário a uma instância específica do modelo Livros (o livro que foi recuperado do banco de dados na linha anterior). Isso é crucial para que o formulário saiba qual livro está sendo atualizado.
+> - **delete():** É uma função do Django especificamente para deletar itens do banco de dados, assim como o **save()** é uma função para salvar ou atualizar os dados do banco.
+
+##### 2. Criando site html para editar livros
+
+>🔔 #  Para editar os livros é necessário que exista uma página/modal que apresente um formulário para que seja preenchido e dessa forma, editar os livros que foram pegos pelo ID.
+
+- Vá até ao seu diretório **Website/templates** e crie um HTML chamado `editar_livros.html`
+
+<img src="README-assets/ex104.PNG" alt="Exemplo104">
+
+- Dentro do mesmo html, iremos inserir os códigos do extends, load static (para adquirir as personalizações externas) e o formulário para ser editado seus valores.
+
+```bash
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block title %}Adicionar Livro{% endblock %}</title>
+    <!--Header-->
+    {% include 'partials/header.html' %}
+    <!--Mensagens-->
+    {% include 'partials/alerts.html' %}
+    <main>
+        <h1>Adicionar Livro</h1>
+        <form method="post" enctype="multipart/form-data" action="{% url 'update' livros.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ livro_form.titulo.id_for_label }}">Título:</label>
+                {{ livro_form.titulo }}
+            </div>
+            <div class="form-group">
+                <label for="{{ livro_form.autor.id_for_label }}">Autor:</label>
+                {{ livro_form.autor }}
+            </div>
+            <div class="form-group">
+                <label for="{{ livro_form.publicação.id_for_label }}">Data de Publicação:</label>
+                {{ livro_form.publicação }}
+            </div>
+            <div class="form-group">
+                <label for="{{ livro_form.paginas.id_for_label }}">Número de Páginas:</label>
+                {{ livro_form.paginas }}
+            </div>
+            <div class="form-group">
+                <label for="{{ livro_form.capa.id_for_label }}">Capa do Livro:</label>
+                {{ livro_form.capa }}
+            </div>
+            <button type="submit">Editar Livro</button>
+        </form>
+    </main>
+    <!--Footer-->
+    {% include 'partials/footer.html' %}
+{% endblock %}
+```
+
+- Vamos agora criar a sua url no arquivo **Website/urls.py** e sua view no arquivo **Website/views.py**
+
+url.py:
+<img src="README-assets/ex105.PNG" alt="Exemplo105">
+
+views.py:
+```bash
+def editar_livro(request, id):
+    livros = Livro.objects.get(pk=id)
+    livro_form = LivroForm(instance=livros)
+    return render(request, "editar_livros.html",{'livros':livros, 'livro_form':livro_form})
+```
+
+##### 3. Adicionando botões para deletar e editar livros
+
+> 🔔 # Agora que já temos a página pronta e as funções, precisamos de interliga-las em botões para que seu sistema saiba qual item/livro ele irá adquirir o id para edita-lo ou deleta-lo
+
+- Vá até a página de **listar_livros.html** e insira esses botões dentro do seu **for** para que seja identificado seus IDs.
+
+```bash
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block title %}Lista de Livros{% endblock %}</title>
+        <!--Header-->
+        {% include 'partials/header.html' %}
+        <!--Mensagens-->
+        {% include 'partials/alerts.html' %}
+        <!--Main-->
+        <main class="bg-gray">
+            <h1>Lista de Livros</h1>
+            <ul>
+                {% for livro in livros %}
+                <li>{{ livro.titulo }} por {{ livro.autor }}</li>
+                <li>
+                    {% if livro.capa %}
+                        <img src="{{ livro.capa.url }}" alt="capa-de-livros" width="10%">
+                    {% else %}
+                        <p>Capa não encontrada</p>
+                    {% endif %}
+                </li>
+                <a href="{% url 'delete' livro.id %}"><button>Deletar</button></a>
+                <a href="{% url 'editar_livro' livro.id %}"><button>Editar</button></a>
+                {% endfor %}
+            </ul>
+        </main>
+        <!--Footer-->
+        {% include 'partials/footer.html' %}
+{% endblock %}
+```
+
+> Como consegue ver, adicionamos 2 `<a>` com 2 `<button>` que possuem funções diferentes, um para deletar e outro para enviar até a página de edição onde será realizado o preenchimento do formulário.
+
+--------------------------------------------------------------
+
+## 📗 Fase 11: Testes e Depuração

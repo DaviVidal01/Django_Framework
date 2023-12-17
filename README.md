@@ -1473,7 +1473,8 @@ label {
 input[type="text"],
 input[type="date"],
 input[type="number"],
-input[type="file"] {
+input[type="file"], 
+input[type="password"]{
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -1731,3 +1732,26 @@ Exemplo:
 - Insere esse codigo atualizado na sua view de páginas.
 
 <img src="README-assets/ex101.png" alt="Exemplo101">
+
+- Ao final de configurar todos os códigos, você poderá testar o login no site usando o username que você criou e a senha que você utilizou do **Superuser**.
+
+<img src="README-assets/ex102.PNG" alt="Exemplo102">
+
+--------------------------------------------------------------
+
+## 📗 Fase 10: CRUD (Create, Read, Update, Delete)
+
+>🔔 # Percebam que o CRUD é uma abreviação de **Create, Read, Update e Delete**, percebam também que já criamos 2 deles, que é o Create (Adicionar Livros) e o Read (Listar Livros), agora falta criarmos o Update e o Delete dos livros.
+
+##### 1. Criando as urls e views de Delete e Update
+
+- Vá até o seu arquivo de **views.py** e crie as seguintes views:
+
+delete:
+```bash
+def delete(request,id):
+    livros = Produtos_BD.objects.get(pk=id)
+    fotos.delete()
+    messages.error(request, 'Produto deletado com sucesso!')
+    return redirect('listarFotos')
+```

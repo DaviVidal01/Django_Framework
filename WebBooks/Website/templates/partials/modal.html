@@ -11,14 +11,10 @@
           <!-- Formulário de Login -->
           <form method="POST" action="{% url 'login_user' %}">
             {% csrf_token %}
-            <div class="form-group">
-              {{ login_form.username.label }}
-              {{ login_form.username }}
-            </div>
-            <div class="form-group">
-              {{ login_form.password.label }}
-              {{ login_form.password }}
-            </div>
+            {{ login_form.username.label }}
+            {{ login_form.username }}
+            {{ login_form.password.label }}
+            {{ login_form.password }}
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               <button type="submit" class="btn btn-primary">Entrar</button>

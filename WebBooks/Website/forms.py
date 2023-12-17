@@ -9,4 +9,4 @@ class LivroForm(forms.Form):
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username", required=True, max_length=100)
-    password = forms.CharField(label="Senha", required=True, max_length=100, widget=forms.PasswordInput(attrs={'type':'password'}))
+    password = forms.CharField(label="Senha", required=True, max_length=100,widget=forms.PasswordInput(attrs={"type":"password"}))

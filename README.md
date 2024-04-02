@@ -53,7 +53,7 @@
 - - [9.1. Configurar a Autenticação de Usuário Padrão Django](#91-configurar-a-autenticação-de-usuário-padrão-django)
 - [Fase 10: CRUD (Create, Read, Update, Delete)](#-fase-10-crud-create-read-update-delete)
 - [Fase 11: Testes e Depuração](#-fase-11-testes-e-depuração)
-- [Fase 12: Deploy (Implantação) em Produção](-fase-12-deploy-implantação-em-produção)
+- [Fase 12: Deploy (Implantação) em Produção](#-fase-12-deploy-implantação-em-produção)
 
 ---------------------------------------------------------------
 

@@ -49,10 +49,11 @@
 - - [8.3. Criando um Template para o Formulário](#83-criando-um-template-para-o-formulário)
 - - [8.4. Personalizando Formulário Template](#84-personalizando-formulário-template)
 - - [8.5. Mapear URLs](#85-mapear-urls)
-- [Fase 9: Autenticação e Autorização](#-fase-9-autenticação-e-autorização) EM BREVE
-- [Fase 10: CRUD (Create, Read, Update, Delete)]() EM BREVE
-- [Fase 11: Testes e Depuração]() EM BREVE
-- [Fase 12: Deploy (Implantação) em Produção]() EM BREVE
+- [Fase 9: Autenticação e Autorização](#-fase-9-autenticação-e-autorização)
+- - [9.1. Configurar a Autenticação de Usuário Padrão Django](#91-configurar-a-autenticação-de-usuário-padrão-django)
+- [Fase 10: CRUD (Create, Read, Update, Delete)](#-fase-10-crud-create-read-update-delete)
+- [Fase 11: Testes e Depuração](#-fase-11-testes-e-depuração)
+- [Fase 12: Deploy (Implantação) em Produção](-fase-12-deploy-implantação-em-produção)
 
 ---------------------------------------------------------------
 
@@ -2140,3 +2141,7 @@ if DEBUG:
 --------------------------------------------------------------
 
 ## 📗 Fase 12: Deploy (Implantação) em produção
+
+> 🔔 # A fase de Deploy é a finalização do produto e implantação do projeto, podem ser usado métodos pagos ou assinaturas como da Hostinger ou Azure, existem várias formas de realizar o deploy do seu trabalho, mas isso não será abordado aqui na página
+
+# OBRIGADO POR LER E APRENDER ATÉ AQUI, ME SIGA E FAVORITA O REPOSITÓRIO <3
